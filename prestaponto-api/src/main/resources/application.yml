@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: prestaponto-api
+  config:
+    import: "optional:file:./.env[.properties],optional:file:./prestaponto-api/.env[.properties]"
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
