@@ -1,0 +1,74 @@
+package br.senac.ead.prestaponto.api.controller;
+
+import br.senac.ead.prestaponto.api.dto.request.LoginRequestDTO;
+import br.senac.ead.prestaponto.api.dto.response.ApiResponse;
+import br.senac.ead.prestaponto.api.dto.response.LoginResponseDTO;
+import br.senac.ead.prestaponto.api.security.TokenService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+
+    private final PasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
+    private final UserService userService;
+
+    public AuthController(PasswordEncoder passwordEncoder,
+                          TokenService tokenService,
+                          UserService userService) {
+        this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
+        this.userService = userService;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<LoginResponseDTO>> login(
+            @Valid @RequestBody LoginRequestDTO dto) {
+
+        UserModel user = userService.login(dto)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(dto.password(), user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ApiResponse<>(false, null, "Invalid credentials"));
+        }
+
+        String token = tokenService.generateToken(user);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true,
+                        new LoginResponseDTO(user.getName(), token),
+                        "Login successful"
+                )
+        );
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse<LoginResponseDTO>> register(
+            @Valid @RequestBody UserRecordDTO dto) {
+
+        if (userService.findByEmail(dto).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(new ApiResponse<>(false, null, "User already exists"));
+        }
+
+        UserModel newUser = userService.save(dto);
+        String token = tokenService.generateToken(newUser);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(
+                        true,
+                        new LoginResponseDTO(dto.name(), token),
+                        "User created successfully"
+                ));
+    }
+}
