@@ -1,0 +1,14 @@
+.git
+.github
+.agents
+.codex
+.vscode
+.env
+**/.env
+**/.idea
+**/.DS_Store
+**/node_modules
+**/target
+**/dist
+**/.angular
+**/coverage
