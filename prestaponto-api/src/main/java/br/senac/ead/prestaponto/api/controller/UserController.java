@@ -43,7 +43,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<?> register(@RequestBody CreateUserRequest request) {
 
-        User savedUser =userService.register(modelMapper.map(request, User.class));
+        User savedUser = userService.register(modelMapper.map(request, User.class));
         
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest() 

@@ -5,3 +5,9 @@ spring:
     import: "optional:file:./.env[.properties],optional:file:./prestaponto-api/.env[.properties]"
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
+
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:prestaponto-local-secret-change-me}
+      issuer: ${JWT_ISSUER:${spring.application.name}}
