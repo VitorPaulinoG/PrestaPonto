@@ -1,10 +1,11 @@
 package br.senac.ead.prestaponto.api.security;
 
+import br.senac.ead.prestaponto.api.entity.User;
+import br.senac.ead.prestaponto.api.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,35 +18,26 @@ import java.util.Collections;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private TokenService tokenService;
+    private final TokenService tokenService;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    public SecurityFilter(TokenService tokenService, UserRepository userRepository) {
+        this.tokenService = tokenService;
+        this.userRepository = userRepository;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
-
-        String path = request.getServletPath();
-
-        if (path.startsWith("/auth")
-                || path.startsWith("/swagger")
-                || path.startsWith("/v3/api-docs")) {
-
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         String token = recoverToken(request);
 
         if (token != null) {
             String login = tokenService.validateToken(token);
 
             if (login != null) {
-                UserModel user = userRepository.findByUsermail(login)
+                User user = userRepository.findByEmail(login)
                         .orElse(null);
 
                 if (user != null) {
@@ -61,7 +53,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                     );
 
                     var authentication = new UsernamePasswordAuthenticationToken(
-                            user.getEmail(), null, authorities
+                            user, null, authorities
                     );
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -70,6 +62,14 @@ public class SecurityFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+        return path.startsWith("/auth")
+                || path.startsWith("/swagger")
+                || path.startsWith("/v3/api-docs");
     }
 
     private String recoverToken(HttpServletRequest request) {

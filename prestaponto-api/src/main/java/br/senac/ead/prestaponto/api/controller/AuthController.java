@@ -3,7 +3,9 @@ package br.senac.ead.prestaponto.api.controller;
 import br.senac.ead.prestaponto.api.dto.request.LoginRequestDTO;
 import br.senac.ead.prestaponto.api.dto.response.ApiResponse;
 import br.senac.ead.prestaponto.api.dto.response.LoginResponseDTO;
+import br.senac.ead.prestaponto.api.entity.User;
 import br.senac.ead.prestaponto.api.security.TokenService;
+import br.senac.ead.prestaponto.api.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +35,10 @@ public class AuthController {
     public ResponseEntity<ApiResponse<LoginResponseDTO>> login(
             @Valid @RequestBody LoginRequestDTO dto) {
 
-        UserModel user = userService.login(dto)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userService.findByEmail(dto.email())
+                .orElse(null);
 
-        if (!passwordEncoder.matches(dto.password(), user.getPassword())) {
+        if (user == null || !passwordEncoder.matches(dto.password(), user.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new ApiResponse<>(false, null, "Invalid credentials"));
         }
@@ -52,23 +54,4 @@ public class AuthController {
         );
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<ApiResponse<LoginResponseDTO>> register(
-            @Valid @RequestBody UserRecordDTO dto) {
-
-        if (userService.findByEmail(dto).isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(new ApiResponse<>(false, null, "User already exists"));
-        }
-
-        UserModel newUser = userService.save(dto);
-        String token = tokenService.generateToken(newUser);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<>(
-                        true,
-                        new LoginResponseDTO(dto.name(), token),
-                        "User created successfully"
-                ));
-    }
 }
