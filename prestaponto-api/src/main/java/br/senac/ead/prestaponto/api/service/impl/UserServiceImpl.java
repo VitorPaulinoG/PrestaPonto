@@ -1,5 +1,7 @@
 package br.senac.ead.prestaponto.api.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +31,9 @@ public class UserServiceImpl implements UserService {
         return repository.save(user);
     }
 
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
 
 }
