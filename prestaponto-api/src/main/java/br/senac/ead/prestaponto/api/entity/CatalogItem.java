@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_service")
+@Table(name = "tb_catalog_item")
 @Getter
 @Setter
 @Builder
@@ -38,7 +38,7 @@ public class CatalogItem {
     @Column(nullable = false, length = 255)
     private String category;
     
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false)
     private double price;
 
     @ManyToOne

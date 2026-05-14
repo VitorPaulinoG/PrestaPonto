@@ -10,4 +10,6 @@ import br.senac.ead.prestaponto.api.entity.CatalogItem;
 
 public interface CatalogItemRepository extends JpaRepository<CatalogItem, UUID> {
     Page<CatalogItem> findByProviderIdAndCategory(UUID providerId, String category, Pageable pageable);
+    Page<CatalogItem> findByProviderId(UUID providerId, Pageable pageable);
+    Page<CatalogItem> findByCategory(String category, Pageable pageable);
 }

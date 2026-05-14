@@ -2,9 +2,6 @@ package br.senac.ead.prestaponto.api.entity;
 
 import java.util.UUID;
 
-import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties.Apiversion.Use;
-
-import jakarta.annotation.Generated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
