@@ -4,8 +4,8 @@ services:
     container_name: ${DB_CONTAINER_NAME:-prestaponto-db}
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-prestaponto}
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
     ports:
       - '${DB_PORT:-5432}:5432'
     volumes:
@@ -30,7 +30,7 @@ services:
     container_name: ${API_CONTAINER_NAME:-prestaponto-api}
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
-      DB_URL: ${API_DB_URL:-jdbc:postgresql://db:5432/prestaponto}
+      DB_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-prestaponto}
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
     ports:
