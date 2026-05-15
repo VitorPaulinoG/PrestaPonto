@@ -21,6 +21,20 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'provider/catalog',
+    loadComponent: () =>
+      import(
+        './features/marketplace/pages/provider-catalog-page/provider-catalog-page.component'
+      ).then((module) => module.ProviderCatalogPageComponent),
+  },
+  {
+    path: 'provider/catalog/new',
+    loadComponent: () =>
+      import(
+        './features/marketplace/pages/provider-service-create-page/provider-service-create-page.component'
+      ).then((module) => module.ProviderServiceCreatePageComponent),
+  },
+  {
     path: '**',
     redirectTo: 'login',
   },

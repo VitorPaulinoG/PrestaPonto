@@ -1,0 +1,27 @@
+.service-create-page {
+  flex: 1;
+  padding: var(--spacing-md);
+}
+
+.service-create-page__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.service-create-page__submit {
+  min-height: 3rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
+  color: var(--color-white);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1;
+  background: var(--color-primary-02);
+}
+
+.service-create-page__submit:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus-ring);
+}

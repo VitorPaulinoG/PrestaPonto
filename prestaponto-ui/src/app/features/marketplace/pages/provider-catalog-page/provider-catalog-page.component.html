@@ -1,0 +1,25 @@
+<app-mobile-shell [navItems]="navItems" activeNav="catalog">
+  <header class="catalog-header">
+    <app-search-bar placeholder="Buscar os serviços do seu catálogo" />
+  </header>
+
+  <main class="catalog-page">
+    <section class="catalog-page__section">
+      <h1>Serviços</h1>
+
+      <div class="catalog-page__list">
+        @for (service of services; track service.title) {
+          <app-service-list-item
+            [title]="service.title"
+            [category]="service.category"
+            [price]="service.price"
+          />
+        }
+      </div>
+    </section>
+
+    <a class="catalog-page__fab" routerLink="/provider/catalog/new" aria-label="Cadastrar serviço">
+      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>
+    </a>
+  </main>
+</app-mobile-shell>

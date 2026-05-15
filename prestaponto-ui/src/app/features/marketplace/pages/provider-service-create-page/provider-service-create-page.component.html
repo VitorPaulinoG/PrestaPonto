@@ -1,0 +1,35 @@
+<app-mobile-shell [navItems]="navItems" activeNav="catalog">
+  <app-page-topbar title="Cadastrar Serviço" backRoute="/provider/catalog" />
+
+  <main class="service-create-page">
+    <form class="service-create-page__form" [formGroup]="form" (ngSubmit)="submit()">
+      <app-labeled-input
+        label="Nome:"
+        placeholder="Ex: Aterramento Elétrico"
+        [control]="form.controls.name"
+      />
+
+      <app-labeled-input
+        label="Descrição"
+        placeholder="Ex: Instalação de sistema de segurança para os circuitos elétricos."
+        [control]="form.controls.description"
+        [multiline]="true"
+      />
+
+      <app-labeled-input
+        label="Categoria"
+        placeholder="Ex: Instalações Elétricas"
+        [control]="form.controls.category"
+      />
+
+      <app-labeled-input
+        label="Preço"
+        placeholder="25,00"
+        [control]="form.controls.price"
+        inputMode="decimal"
+      />
+
+      <button class="service-create-page__submit" type="submit">Cadastrar</button>
+    </form>
+  </main>
+</app-mobile-shell>
