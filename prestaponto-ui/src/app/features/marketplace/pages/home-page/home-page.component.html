@@ -1,0 +1,39 @@
+<app-mobile-shell [navItems]="navItems" activeNav="home">
+  <header class="hero-header">
+    <h1>Qual serviço você precisa hoje?</h1>
+    <app-search-bar placeholder="Buscar Profissionais ou Serviços..." />
+  </header>
+
+  <main class="page-content">
+    <section class="section-block">
+      <div class="section-block__header">
+        <h2>Categoria</h2>
+        <a href="#">Ver Todas</a>
+      </div>
+
+      <div class="category-grid">
+        @for (category of categories; track category.title) {
+          <app-category-card [title]="category.title" [icon]="category.icon" />
+        }
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-block__header">
+        <h2>Em Destaque</h2>
+        <a href="#">Ver Todas</a>
+      </div>
+
+      <div class="list-stack">
+        @for (provider of providers; track provider.name + provider.category) {
+          <app-provider-list-item
+            [initials]="provider.initials"
+            [name]="provider.name"
+            [category]="provider.category"
+            [rating]="provider.rating"
+          />
+        }
+      </div>
+    </section>
+  </main>
+</app-mobile-shell>

@@ -21,6 +21,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'home',
+    loadComponent: () =>
+      import('./features/marketplace/pages/home-page/home-page.component').then(
+        (module) => module.HomePageComponent,
+      ),
+  },
+  {
     path: 'provider/catalog',
     loadComponent: () =>
       import(

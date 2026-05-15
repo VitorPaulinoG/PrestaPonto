@@ -1,0 +1,25 @@
+<article class="category-card">
+  <span class="category-card__icon" aria-hidden="true">
+    @switch (icon()) {
+      @case ('build') {
+        <svg viewBox="0 0 48 48"><path d="m17 13 18 18M14 20a7 7 0 0 1 10-8.5l2 2-7.5 7.5-2-2A7 7 0 0 1 14 20Zm17.5 8.5L38 35l-6 6-6.5-6.5" /></svg>
+      }
+      @case ('beauty') {
+        <svg viewBox="0 0 48 48"><path d="M16 10h16M22 10v8l-8 10 6 12h8l6-12-8-10v-8M34 14h4M34 22h4M34 30h4" /></svg>
+      }
+      @case ('computer') {
+        <svg viewBox="0 0 48 48"><path d="M10 12h28v18H10zM18 36h12M14 40h20" /></svg>
+      }
+      @case ('events') {
+        <svg viewBox="0 0 48 48"><path d="m12 34 10-20 14 8-24 12ZM27 11l3-3M33 17l5-1M34 25l4 2" /></svg>
+      }
+      @case ('cleaning') {
+        <svg viewBox="0 0 48 48"><path d="M24 10v10M16 24h16l-2 12H18zM14 24h20" /></svg>
+      }
+      @case ('care') {
+        <svg viewBox="0 0 48 48"><path d="M24 38a14 14 0 1 0 0-28 14 14 0 0 0 0 28ZM19 21h.01M29 21h.01M19 28c2 2 8 2 10 0" /></svg>
+      }
+    }
+  </span>
+  <span class="category-card__title">{{ title() }}</span>
+</article>
