@@ -1,1 +1,53 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --color-primary-01: #1a5276;
+  --color-primary-02: #2173a7;
+  --color-primary-03: #3fadf4;
+  --color-secondary-02: #9bbcd0;
+  --color-secondary-04: #f0f4f7;
+  --color-white: #ffffff;
+  --color-text: var(--color-primary-01);
+  --color-input-placeholder: var(--color-primary-03);
+  --color-page-background: var(--color-secondary-04);
+  --color-desktop-panel: #2f7cad;
+  --shadow-focus-ring: 0 0 0 3px rgb(63 173 244 / 0.2);
+  --font-family-base: 'Open Sans', sans-serif;
+  --radius-sm: 8px;
+  --spacing-xs: 4px;
+  --spacing-sm: 10px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 24px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family-base);
+  color: var(--color-text);
+  background: var(--color-page-background);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}

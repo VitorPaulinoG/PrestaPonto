@@ -1,0 +1,24 @@
+<app-auth-shell activeTab="login">
+  <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+    <app-auth-select-field [control]="form.controls.role" [options]="roleOptions" />
+
+    <app-auth-field
+      [control]="form.controls.email"
+      icon="email"
+      type="email"
+      autocomplete="email"
+      placeholder="Insira seu email"
+    />
+
+    <app-auth-field
+      [control]="form.controls.password"
+      icon="password"
+      type="password"
+      autocomplete="current-password"
+      placeholder="Insira sua senha"
+    />
+
+    <button class="auth-form__link" type="button">Esqueceu Sua Senha?</button>
+    <button class="auth-form__submit" type="submit">Login</button>
+  </form>
+</app-auth-shell>

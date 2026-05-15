@@ -1,0 +1,103 @@
+.auth-shell {
+  min-height: 100dvh;
+  background: var(--color-page-background);
+}
+
+.auth-shell__panel {
+  display: none;
+}
+
+.auth-shell__content {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-white);
+}
+
+.auth-shell__header {
+  background: var(--color-white);
+}
+
+.auth-shell__logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 4.438rem;
+  padding: var(--spacing-sm);
+}
+
+.auth-shell__welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  min-height: 6.875rem;
+  padding: var(--spacing-sm) 5rem;
+  text-align: center;
+  color: var(--color-primary-01);
+}
+
+.auth-shell__welcome h1,
+.auth-shell__welcome p {
+  margin: 0;
+}
+
+.auth-shell__welcome h1 {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.auth-shell__welcome p {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.auth-shell__tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  background: var(--color-white);
+}
+
+.auth-shell__tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.75rem;
+  border-bottom: 2px solid var(--color-secondary-02);
+  color: var(--color-secondary-02);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.auth-shell__tab--active {
+  color: var(--color-primary-02);
+  border-color: var(--color-primary-02);
+}
+
+.auth-shell__body {
+  flex: 1;
+  padding: 1.25rem var(--spacing-md) var(--spacing-sm);
+  background: var(--color-page-background);
+}
+
+@media (min-width: 1024px) {
+  .auth-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 2.05fr) minmax(22rem, 1fr);
+  }
+
+  .auth-shell__panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-desktop-panel);
+    min-height: 100dvh;
+  }
+}

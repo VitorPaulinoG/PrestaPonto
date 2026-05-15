@@ -1,0 +1,39 @@
+<section class="auth-shell">
+  <aside class="auth-shell__panel">
+    <app-brand-logo [inverted]="true" />
+  </aside>
+
+  <div class="auth-shell__content">
+    <header class="auth-shell__header">
+      <div class="auth-shell__logo">
+        <app-brand-logo [compact]="true" />
+      </div>
+
+      <div class="auth-shell__welcome">
+        <h1>Bem vindo ao PrestaPonto</h1>
+        <p>Faça login ou cadastre-se para acessar nosso marketplace de serviços.</p>
+      </div>
+    </header>
+
+    <nav class="auth-shell__tabs" aria-label="Navegação de autenticação">
+      <a
+        class="auth-shell__tab"
+        [class.auth-shell__tab--active]="activeTab() === 'login'"
+        routerLink="/login"
+      >
+        Login
+      </a>
+      <a
+        class="auth-shell__tab"
+        [class.auth-shell__tab--active]="activeTab() === 'signup'"
+        routerLink="/signup"
+      >
+        Sign Up
+      </a>
+    </nav>
+
+    <main class="auth-shell__body">
+      <ng-content />
+    </main>
+  </div>
+</section>

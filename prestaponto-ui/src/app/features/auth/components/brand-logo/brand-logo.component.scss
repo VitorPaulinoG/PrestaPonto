@@ -1,0 +1,32 @@
+.brand-logo {
+  display: inline-flex;
+  align-items: flex-start;
+  color: var(--color-primary-02);
+  font-weight: 600;
+  line-height: 0.9;
+}
+
+.brand-logo--inverted {
+  color: var(--color-white);
+}
+
+.brand-logo__mark {
+  font-size: 2.875rem;
+}
+
+.brand-logo__text {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.3rem;
+  margin-left: -0.1rem;
+  font-size: 1.875rem;
+}
+
+.brand-logo--compact .brand-logo__mark {
+  font-size: 2rem;
+}
+
+.brand-logo--compact .brand-logo__text {
+  margin-top: 0.18rem;
+  font-size: 1.3rem;
+}

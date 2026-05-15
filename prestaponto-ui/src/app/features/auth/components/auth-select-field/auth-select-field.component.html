@@ -1,0 +1,13 @@
+<label class="auth-select-field">
+  <select class="auth-select-field__select" [formControl]="control()">
+    @for (option of options(); track option.value) {
+      <option [value]="option.value">{{ option.label }}</option>
+    }
+  </select>
+
+  <span class="auth-select-field__icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" focusable="false">
+      <path d="m7 10 5 5 5-5" />
+    </svg>
+  </span>
+</label>

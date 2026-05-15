@@ -1,0 +1,38 @@
+<app-auth-shell activeTab="signup">
+  <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+    <app-auth-select-field [control]="form.controls.role" [options]="roleOptions" />
+
+    <app-auth-field
+      [control]="form.controls.name"
+      icon="person"
+      autocomplete="name"
+      placeholder="Insira seu nome"
+    />
+
+    <app-auth-field
+      [control]="form.controls.email"
+      icon="email"
+      type="email"
+      autocomplete="email"
+      placeholder="Insira seu email"
+    />
+
+    <app-auth-field
+      [control]="form.controls.password"
+      icon="password"
+      type="password"
+      autocomplete="new-password"
+      placeholder="Insira sua senha"
+    />
+
+    <app-auth-field
+      [control]="form.controls.confirmPassword"
+      icon="password"
+      type="password"
+      autocomplete="new-password"
+      placeholder="Confirme sua senha"
+    />
+
+    <button class="auth-form__submit" type="submit">Sign Up</button>
+  </form>
+</app-auth-shell>

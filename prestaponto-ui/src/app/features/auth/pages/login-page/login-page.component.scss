@@ -1,0 +1,36 @@
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  width: 100%;
+}
+
+.auth-form__link {
+  align-self: flex-start;
+  border: 0;
+  padding: 0;
+  color: var(--color-primary-01);
+  font-size: 0.75rem;
+  line-height: 1;
+  background: transparent;
+}
+
+.auth-form__submit {
+  align-self: center;
+  width: min(100%, 15.063rem);
+  min-height: 3rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
+  color: var(--color-white);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1;
+  background: var(--color-primary-02);
+}
+
+.auth-form__submit:focus-visible,
+.auth-form__link:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus-ring);
+}

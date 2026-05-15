@@ -1,0 +1,46 @@
+.auth-select-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 3rem;
+  padding: 0 var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+}
+
+.auth-select-field__select {
+  width: 100%;
+  min-height: 3rem;
+  border: 0;
+  padding: 0 2rem 0 var(--spacing-sm);
+  color: var(--color-primary-02);
+  font-size: 1rem;
+  line-height: 1.25rem;
+  background: transparent;
+  outline: none;
+  appearance: none;
+}
+
+.auth-select-field__icon {
+  position: absolute;
+  right: var(--spacing-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary-03);
+  pointer-events: none;
+}
+
+.auth-select-field__icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.auth-select-field:focus-within {
+  box-shadow: var(--shadow-focus-ring);
+}
