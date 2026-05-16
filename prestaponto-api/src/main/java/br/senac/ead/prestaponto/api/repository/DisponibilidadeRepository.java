@@ -16,24 +16,35 @@ public interface DisponibilidadeRepository extends JpaRepository<Disponibilidade
 
     List<Disponibilidade> findByPrestadorId(UUID prestadorId);
 
-    /**
-     * Verifica se já existe uma disponibilidade do prestador naquele dia
-     * que conflita com o intervalo de horário informado.
-     *
-     * Conflito ocorre quando o novo intervalo [horaInicio, horaFim] sobrepõe
-     * qualquer intervalo já cadastrado para o mesmo dia.
-     */
     @Query("""
                 SELECT COUNT(d) > 0
                 FROM Disponibilidade d
                 WHERE d.prestador.id = :prestadorId
-                  AND d.diaSemana = :diaSemana
-                  AND d.status <> 'CANCELADO'
-                  AND d.horaInicio < :horaFim
-                  AND d.horaFim > :horaInicio
+                  AND d.diaSemana   = :diaSemana
+                  AND d.status      <> 'CANCELADO'
+                  AND d.horaInicio  < :horaFim
+                  AND d.horaFim     > :horaInicio
+                  AND (:excluirId IS NULL OR d.id <> :excluirId)
             """)
-    boolean existeConflito(
+    boolean existeConflitoPrestador(
             @Param("prestadorId") UUID prestadorId,
+            @Param("diaSemana") LocalDate diaSemana,
+            @Param("horaInicio") LocalTime horaInicio,
+            @Param("horaFim") LocalTime horaFim,
+            @Param("excluirId") UUID excluirId
+    );
+
+    @Query("""
+                SELECT COUNT(d) > 0
+                FROM Disponibilidade d
+                WHERE d.cliente.id = :clienteId
+                  AND d.diaSemana  = :diaSemana
+                  AND d.status     = 'CONFIRMADO'
+                  AND d.horaInicio < :horaFim
+                  AND d.horaFim    > :horaInicio
+            """)
+    boolean existeConflitoCliente(
+            @Param("clienteId") UUID clienteId,
             @Param("diaSemana") LocalDate diaSemana,
             @Param("horaInicio") LocalTime horaInicio,
             @Param("horaFim") LocalTime horaFim

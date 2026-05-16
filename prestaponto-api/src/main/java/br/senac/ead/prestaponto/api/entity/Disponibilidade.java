@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "tb_disponibilidades")
+@Table(name = "disponibilidades")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,7 +21,11 @@ public class Disponibilidade {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prestador_id", nullable = false)
-    private User user;
+    private User prestador;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_id")
+    private User cliente;
 
     @Column(name = "dia_semana", nullable = false)
     private LocalDate diaSemana;
@@ -32,12 +36,7 @@ public class Disponibilidade {
     @Column(name = "hora_fim", nullable = false)
     private LocalTime horaFim;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    @Builder.Default
-    private StatusDisponibilidade status = StatusDisponibilidade.PENDENTE;
-
-    public enum StatusDisponibilidade {
-        PENDENTE, CONFIRMADO, CANCELADO
+    public boolean isReservada() {
+        return this.cliente != null;
     }
 }
