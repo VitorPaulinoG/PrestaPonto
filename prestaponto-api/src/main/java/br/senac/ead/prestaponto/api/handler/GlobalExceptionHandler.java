@@ -1,14 +1,20 @@
 package br.senac.ead.prestaponto.api.handler;
 
 import org.springframework.http.HttpStatus;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.senac.ead.prestaponto.api.exception.EntityAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice
@@ -49,5 +55,35 @@ public class GlobalExceptionHandler {
         log.error(ex.getMessage());
         
         return ResponseEntity.internalServerError().body(problemDetail);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNotFound(EntityNotFoundException ex) {
+        return build(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Map<String, Object>> handleConflict(IllegalStateException ex) {
+        return build(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
+        List<String> errors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(fe -> fe.getField() + ": " + fe.getDefaultMessage())
+                .toList();
+
+        return build(HttpStatus.BAD_REQUEST, errors.toString());
+    }
+
+    private ResponseEntity<Map<String, Object>> build(HttpStatus status, String message) {
+        return ResponseEntity.status(status).body(Map.of(
+                "timestamp", Instant.now().toString(),
+                "status",    status.value(),
+                "error",     status.getReasonPhrase(),
+                "message",   message
+        ));
     }
 }
