@@ -1,6 +1,7 @@
 package br.senac.ead.prestaponto.api.service.impl;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByEmail(String email) {
         return repository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<User> findById(UUID id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    public boolean existsById(UUID id) {
+        return repository.existsById(id);
     }
 
 }

@@ -1,94 +1,159 @@
 package br.senac.ead.prestaponto.api.service.impl;
 
-import br.senac.ead.prestaponto.api.dto.request.DisponibilidadeRequestDTO;
-import br.senac.ead.prestaponto.api.dto.response.DisponibilidadeResponseDTO;
 import br.senac.ead.prestaponto.api.entity.Disponibilidade;
 import br.senac.ead.prestaponto.api.entity.User;
 import br.senac.ead.prestaponto.api.repository.DisponibilidadeRepository;
-import br.senac.ead.prestaponto.api.repository.UserRepository;
 import br.senac.ead.prestaponto.api.service.DisponibilidadeService;
+import br.senac.ead.prestaponto.api.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class DisponibilidadeServiceImpl implements DisponibilidadeService {
 
-    private final DisponibilidadeRepository disponibilidadeRepository;
-    private final UserRepository userRepository;
+    private final DisponibilidadeRepository repository;
+    private final UserService userService;
 
     @Override
     @Transactional
-    public DisponibilidadeResponseDTO cadastrar(UUID prestadorId, DisponibilidadeRequestDTO request) {
+    public Disponibilidade cadastrar(User prestador, Disponibilidade disponibilidade) {
+        
+        disponibilidade.validarIntervalo();
+        validarConflitoPrestador(prestador.getId(), disponibilidade);
+        disponibilidade.setPrestador(buscarUser(prestador.getId()));
 
-        User prestador = buscarUser(prestadorId);
-
-        validarIntervalo(request);
-        validarConflitoPrestador(prestadorId, request, null);
-
-        Disponibilidade disponibilidade = Disponibilidade.builder()
-                .prestador(prestador)
-                .diaSemana(request.getDiaSemana())
-                .horaInicio(request.getHoraInicio())
-                .horaFim(request.getHoraFim())
-                .build();
-
-        return toResponse(disponibilidadeRepository.save(disponibilidade));
+        return repository.save(disponibilidade);
     }
 
     @Override
     @Transactional
-    public DisponibilidadeResponseDTO atualizar(UUID disponibilidadeId, UUID prestadorId,
-                                                 DisponibilidadeRequestDTO request) {
+    public Disponibilidade atualizar(
+        UUID id, 
+        Disponibilidade disponibilidade, 
+        User prestador
+    ) {
 
-        Disponibilidade disponibilidade = buscarDisponibilidade(disponibilidadeId);
+        Disponibilidade disponbilidadeRegistrada = buscarPorId(id);
+        verificarPropriedadePrestador(disponbilidadeRegistrada, prestador);
 
-        verificarPropriedadePrestador(disponibilidade, prestadorId);
-        validarIntervalo(request);
-        validarConflitoPrestador(prestadorId, request, disponibilidadeId);
+        disponibilidade.validarIntervalo();
+        validarConflitoPrestador(prestador.getId(), disponbilidadeRegistrada);
 
-        disponibilidade.setDiaSemana(request.getDiaSemana());
-        disponibilidade.setHoraInicio(request.getHoraInicio());
-        disponibilidade.setHoraFim(request.getHoraFim());
+        disponbilidadeRegistrada.setDiaSemana(disponibilidade.getDiaSemana());
+        disponbilidadeRegistrada.setHoraInicio(disponibilidade.getHoraInicio());
+        disponbilidadeRegistrada.setHoraFim(disponibilidade.getHoraFim());
 
-        return toResponse(disponibilidadeRepository.save(disponibilidade));
+        return repository.save(disponbilidadeRegistrada);
+    }
+
+    @Override
+    @Transactional
+    public void remover(
+        UUID id,
+        User prestador
+    ) {
+        Disponibilidade disponbilidadeRegistrada = buscarPorId(id);
+        verificarPropriedadePrestador(disponbilidadeRegistrada, prestador);
+
+        repository.delete(disponbilidadeRegistrada);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<DisponibilidadeResponseDTO> listarPorPrestador(UUID prestadorId) {
-        if (!userRepository.existsById(prestadorId)) {
-            throw new EntityNotFoundException("Prestador não encontrado: id=" + prestadorId);
+    public Page<Disponibilidade> listarPorPrestador(UUID id, Pageable pageable) {
+        if (!userService.existsById(id)) {
+            throw new EntityNotFoundException("Prestador não encontrado: id=" + id);
         }
-        return disponibilidadeRepository.findByPrestadorId(prestadorId)
-                .stream()
-                .map(this::toResponse)
-                .toList();
+
+        return repository.findByPrestadorId(id, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public DisponibilidadeResponseDTO buscarPorId(UUID disponibilidadeId) {
-        return toResponse(buscarDisponibilidade(disponibilidadeId));
+    public Disponibilidade buscarPorId(UUID id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Disponibilidade não encontrada: id=" + id));
     }
 
     @Override
     @Transactional
-    public DisponibilidadeResponseDTO reservar(UUID disponibilidadeId, UUID clienteId) {
+    public Disponibilidade reservar(UUID id, User cliente) {
 
-        Disponibilidade disponibilidade = buscarDisponibilidade(disponibilidadeId);
+        Disponibilidade disponibilidade = buscarPorId(id);
 
         if (disponibilidade.isReservada()) {
             throw new IllegalStateException("Este horário já está reservado.");
         }
 
-        boolean conflito = disponibilidadeRepository.existeConflitoCliente(
+        validarConflitoCliente(cliente.getId(), disponibilidade);
+
+        disponibilidade.setCliente(buscarUser(cliente.getId()));
+
+        return repository.save(disponibilidade);
+    }
+
+    @Override
+    @Transactional
+    public Disponibilidade cancelarReserva(UUID id, User cliente) {
+
+        Disponibilidade disponibilidade = buscarPorId(id);
+
+        if (!disponibilidade.isReservada()) {
+            throw new IllegalStateException("Este horário não possui reserva.");
+        }
+        
+        verificarPropriedadeCliente(disponibilidade, cliente.getId());
+
+        disponibilidade.setCliente(null);
+
+        return repository.save(disponibilidade);
+    }
+
+    @Override
+    @Transactional
+    public Page<Disponibilidade> listarReservas(User cliente, Pageable pageable) {
+        return repository.findAllByCliente(cliente, pageable);
+    }
+
+    private User buscarUser(UUID id) {
+        return userService.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado: id=" + id));
+    }
+
+    private void validarConflitoPrestador(
+        UUID prestadorId,
+        Disponibilidade disponibilidade
+    ) {
+        boolean conflito = repository.existeConflitoPrestador(
+                prestadorId,
+                disponibilidade.getDiaSemana(),
+                disponibilidade.getHoraInicio(),
+                disponibilidade.getHoraFim(),
+                disponibilidade.getId()
+        );
+
+
+        if (conflito) {
+            throw new IllegalStateException(
+                    "Já existe uma disponibilidade que conflita com o intervalo informado.");
+        }
+    }
+
+    private void validarConflitoCliente(
+        UUID clienteId,
+        Disponibilidade disponibilidade
+    ) {
+        boolean conflito = repository.existeConflitoCliente(
                 clienteId,
                 disponibilidade.getDiaSemana(),
                 disponibilidade.getHoraInicio(),
@@ -97,70 +162,15 @@ public class DisponibilidadeServiceImpl implements DisponibilidadeService {
 
         if (conflito) {
             throw new IllegalStateException(
-                    "Você já possui uma reserva que conflita com este horário.");
+                    "O usuário já possui uma reserva que conflita com este horário.");
         }
 
-        User cliente = buscarUser(clienteId);
-        disponibilidade.setCliente(cliente);
-
-        return toResponse(disponibilidadeRepository.save(disponibilidade));
     }
 
-    @Override
-    @Transactional
-    public DisponibilidadeResponseDTO cancelarReserva(UUID disponibilidadeId, UUID clienteId) {
-
-        Disponibilidade disponibilidade = buscarDisponibilidade(disponibilidadeId);
-
-        if (!disponibilidade.isReservada()) {
-            throw new IllegalStateException("Este horário não possui reserva.");
-        }
-
-        verificarPropriedadeCliente(disponibilidade, clienteId);
-
-        disponibilidade.setCliente(null);
-
-        return toResponse(disponibilidadeRepository.save(disponibilidade));
-    }
-
-    private User buscarUser(UUID id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado: id=" + id));
-    }
-
-    private Disponibilidade buscarDisponibilidade(UUID id) {
-        return disponibilidadeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Disponibilidade não encontrada: id=" + id));
-    }
-
-    private void validarIntervalo(DisponibilidadeRequestDTO request) {
-        if (!request.getHoraInicio().isBefore(request.getHoraFim())) {
-            throw new IllegalArgumentException(
-                    "A hora de início deve ser anterior à hora de fim.");
-        }
-    }
-
-    private void validarConflitoPrestador(UUID prestadorId,
-                                          DisponibilidadeRequestDTO request,
-                                          UUID excluirId) {
-        boolean conflito = disponibilidadeRepository.existeConflitoPrestador(
-                prestadorId,
-                request.getDiaSemana(),
-                request.getHoraInicio(),
-                request.getHoraFim(),
-                excluirId
-        );
-        if (conflito) {
-            throw new IllegalStateException(
-                    "Já existe uma disponibilidade que conflita com o intervalo informado.");
-        }
-    }
-
-    private void verificarPropriedadePrestador(Disponibilidade d, UUID prestadorId) {
-        if (!d.getPrestador().getId().equals(prestadorId)) {
+    private void verificarPropriedadePrestador(Disponibilidade disponibilidade, User prestador) {
+        if (!disponibilidade.getPrestador().getId().equals(prestador.getId())) {
             throw new AccessDeniedException(
-                    "Você não tem permissão para modificar esta disponibilidade.");
+                    "O usuário não tem permissão para modificar esta disponibilidade.");
         }
     }
 
@@ -171,14 +181,4 @@ public class DisponibilidadeServiceImpl implements DisponibilidadeService {
         }
     }
 
-    private DisponibilidadeResponseDTO toResponse(Disponibilidade d) {
-        return DisponibilidadeResponseDTO.builder()
-                .id(d.getId())
-                .prestadorId(d.getPrestador().getId())
-                .clienteId(d.getCliente() != null ? d.getCliente().getId() : null)
-                .diaSemana(d.getDiaSemana())
-                .horaInicio(d.getHoraInicio())
-                .horaFim(d.getHoraFim())
-                .build();
-    }
 }
