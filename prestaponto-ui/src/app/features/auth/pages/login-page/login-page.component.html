@@ -1,7 +1,5 @@
 <app-auth-shell>
   <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
-    <app-select-field [control]="form.controls.role" [options]="roleOptions"/>
-    
     <app-text-field
       [control]="form.controls.email"
       icon="alternate_email"
