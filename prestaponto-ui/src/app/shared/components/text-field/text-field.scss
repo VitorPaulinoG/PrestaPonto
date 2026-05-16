@@ -1,0 +1,42 @@
+.field {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  min-height: 3rem;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+}
+
+.field-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.125rem;
+  min-width: 2.125rem;
+  color: var(--color-primary-03);
+}
+
+.field-icon .material-symbols-outlined {
+  font-size: 1.5rem;
+  color: currentColor;
+}
+
+.field-input {
+  width: 100%;
+  border: 0;
+  padding: 0;
+  color: var(--color-primary-01);
+  font-size: 1rem;
+  line-height: 1.25rem;
+  background: transparent;
+  outline: none;
+}
+
+.field-input::placeholder {
+  color: var(--color-input-placeholder);
+}
+
+.field:focus-within {
+  box-shadow: var(--shadow-focus-ring);
+}

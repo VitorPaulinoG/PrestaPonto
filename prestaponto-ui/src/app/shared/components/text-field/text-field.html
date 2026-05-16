@@ -1,0 +1,13 @@
+<label class="field">
+  <span class="field-icon" aria-hidden="true">
+      <span class="material-symbols-outlined">{{icon()}}</span>
+  </span>
+
+  <input
+    class="field-input"
+    [formControl]="control()"
+    [type]="type()"
+    [placeholder]="placeholder()"
+    [autocomplete]="autocomplete()"
+  />
+</label>
