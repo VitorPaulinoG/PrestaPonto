@@ -15,22 +15,13 @@
       </div>
     </header>
 
-    <nav class="auth-shell__tabs" aria-label="Navegação de autenticação">
-      <a
-        class="auth-shell__tab"
-        [class.auth-shell__tab--active]="activeTab() === 'login'"
-        routerLink="/login"
-      >
-        Login
-      </a>
-      <a
-        class="auth-shell__tab"
-        [class.auth-shell__tab--active]="activeTab() === 'signup'"
-        routerLink="/signup"
-      >
-        Sign Up
-      </a>
-    </nav>
+    <app-tabs
+      ariaLabel="Navegação de autenticação"
+      [items]="[
+        { label: 'Login', routerLink: '/login' },
+        { label: 'Sign Up', routerLink: '/signup' }
+      ]"
+    />
 
     <main class="auth-shell__body">
       <ng-content />

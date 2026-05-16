@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-
-import { AuthFieldComponent } from '../../components/auth-field/auth-field.component';
-import { AuthSelectFieldComponent } from '../../components/auth-select-field/auth-select-field.component';
 import { AuthShellComponent } from '../../components/auth-shell/auth-shell.component';
 import { AUTH_ROLE_OPTIONS, AuthRole } from '../../models/auth.models';
+import { Button } from "../../../../shared/components/button/button";
+import { TextField } from "../../../../shared/components/text-field/text-field";
+import { SelectField } from "../../../../shared/components/select-field/select-field";
 
 type SignupFormGroup = FormGroup<{
   role: FormControl<AuthRole>;
@@ -16,7 +16,7 @@ type SignupFormGroup = FormGroup<{
 
 @Component({
   selector: 'app-signup-page',
-  imports: [ReactiveFormsModule, AuthShellComponent, AuthSelectFieldComponent, AuthFieldComponent],
+  imports: [ReactiveFormsModule, AuthShellComponent, Button, TextField, SelectField],
   templateUrl: './signup-page.component.html',
   styleUrl: './signup-page.component.scss',
 })

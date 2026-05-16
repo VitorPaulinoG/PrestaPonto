@@ -1,15 +1,12 @@
-import { Component, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component } from '@angular/core';
 
-import { AuthTab } from '../../models/auth.models';
-import { BrandLogoComponent } from '../brand-logo/brand-logo.component';
+import { BrandLogoComponent } from '../../../../shared/components/brand-logo/brand-logo.component';
+import { TabsComponent } from '../../../../shared/components/tabs/tabs.component';
 
 @Component({
   selector: 'app-auth-shell',
-  imports: [RouterLink, BrandLogoComponent],
+  imports: [BrandLogoComponent, TabsComponent],
   templateUrl: './auth-shell.component.html',
   styleUrl: './auth-shell.component.scss',
 })
-export class AuthShellComponent {
-  readonly activeTab = input.required<AuthTab>();
-}
+export class AuthShellComponent {}
