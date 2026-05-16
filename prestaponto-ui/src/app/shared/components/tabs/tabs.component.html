@@ -1,0 +1,11 @@
+<nav class="tabs" [attr.aria-label]="ariaLabel()">
+  @for (item of items(); track item.routerLink) {
+    <a
+      class="tabs__item"
+      [routerLink]="item.routerLink"
+      routerLinkActive="tabs__item--active"
+    >
+      {{ item.label }}
+    </a>
+  }
+</nav>
