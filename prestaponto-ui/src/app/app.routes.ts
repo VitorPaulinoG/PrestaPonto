@@ -30,6 +30,14 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'categories',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/marketplace/pages/category-page/category-page.component').then(
+        (module) => module.CategoryPageComponent,
+      ),
+  },
+  {
     path: 'provider/catalog',
     canActivate: [authGuard],
     loadComponent: () =>

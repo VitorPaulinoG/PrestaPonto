@@ -1,0 +1,32 @@
+@if (isOpen()) {
+  <div
+    class="backdrop"
+    [class.visible]="isVisible()"
+    (click)="close()"
+  >
+    <div
+      class="sheet"
+      [class.visible]="isVisible()"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="sheet__header">
+        <h3>{{ title() }}</h3>
+        <button type="button" class="close-btn" (click)="close()">&times;</button>
+      </div>
+      <div class="sheet__body">
+        @for (option of options(); track option.value) {
+          <label class="option flex justify-between">
+            <span>{{ option.label }}</span>
+            <input
+              type="radio"
+              name="bottom-sheet-option"
+              [value]="option.value"
+              [checked]="selectedValue() === option.value"
+              (change)="select(option.value)"
+            />
+          </label>
+        }
+      </div>
+    </div>
+  </div>
+}

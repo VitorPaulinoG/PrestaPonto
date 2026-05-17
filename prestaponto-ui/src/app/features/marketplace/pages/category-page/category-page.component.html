@@ -1,0 +1,25 @@
+<app-mobile-shell [navItems]="navItems" activeNav="home">
+  <app-hero-header title="Qual serviço você precisa hoje?">
+    <app-search-bar placeholder="Buscar Profissionais ou Serviços..." />
+  </app-hero-header>
+  <div class="flex p-2.5 gap-2.5 h-auto w-full bg-white border-b border-primary-02">
+    <app-filter-dropdown 
+      title="Buscar por:" 
+      selectedOption="Prestadores" 
+      [isSelected]="true"
+      modalTitle="Buscar por"
+      [selectedOption]="getCurrentOption()?.label || 'providers'"
+      [options]="options"
+      (optionSelected)="onFilterChange($event)"
+    />
+  </div>
+  <app-page-content>
+    <app-section-block title="Categoria" linkText="Ver Todas" maxHeight="100%">
+      <div class="grid grid-cols-3 gap-2.5">
+        @for (category of categories; track category.title) {
+          <app-category-card [title]="category.title" [icon]="category.icon" />
+        }
+      </div>
+    </app-section-block>
+  </app-page-content>
+</app-mobile-shell>

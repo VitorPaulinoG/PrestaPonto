@@ -1,10 +1,9 @@
 <app-mobile-shell [navItems]="navItems" activeNav="home">
-  <header class="hero-header">
-    <h1>Qual serviço você precisa hoje?</h1>
+  <app-hero-header title="Qual serviço você precisa hoje?">
     <app-search-bar placeholder="Buscar Profissionais ou Serviços..." />
-  </header>
-
-  <main class="page-content">
+  </app-hero-header>
+  
+  <app-page-content>
     <app-section-block title="Categoria" linkText="Ver Todas">
       <div class="category-grid">
         @for (category of categories; track category.title) {
@@ -13,10 +12,10 @@
       </div>
     </app-section-block>
 
-    <app-section-block 
-      title="Em Destaque" 
+    <app-section-block
+      title="Em Destaque"
       linkText="Ver Todos"
-      maxHeight="30rem" 
+      maxHeight="30rem"
     >
       <div class="list-stack">
         @for (provider of providers; track provider.name + provider.category) {
@@ -29,5 +28,5 @@
         }
       </div>
     </app-section-block>
-  </main>
+  </app-page-content>
 </app-mobile-shell>

@@ -79,7 +79,7 @@ export const HOME_CATEGORY_CARDS: CategoryCard[] = [
   // Serviços para Pets
   { title: 'Banho e Tosa', icon: 'pets' },
   { title: 'Adestramento', icon: 'sound_detection_dog_barking' },
-  { title: 'Hospedagem de Animais', icon: 'home_pet' },
+  { title: 'Hospedagem de Animais', icon: 'home' },
 
   // Eventos e Gastronomia
   { title: 'Buffet e Catering', icon: 'restaurant' },

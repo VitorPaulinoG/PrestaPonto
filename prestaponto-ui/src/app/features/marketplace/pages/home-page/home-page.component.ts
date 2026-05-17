@@ -9,16 +9,22 @@ import {
   FEATURED_PROVIDERS,
   HOME_CATEGORY_CARDS,
 } from '../../models/marketplace.models';
-import { SectionBlockComponent } from '../../../../shared/components/section-block/section-block.component'; 
+import { PageContentComponent } from '../../../../shared/components/page-content/page-content.component';
+import { HeroHeaderComponent } from '../../../../shared/components/hero-header/hero-header.component';
+import { SectionBlockComponent } from '../../../../shared/components/section-block/section-block.component';
+import { FilterDropdown } from "../../../../shared/components/filter-dropdown/filter-dropdown"; 
 
 @Component({
   selector: 'app-home-page',
   imports: [
     AppMobileShellComponent,
     SearchBarComponent,
+    PageContentComponent,
+    HeroHeaderComponent,
     SectionBlockComponent,
     CategoryCardComponent,
     ProviderListItemComponent,
+    FilterDropdown
 ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
