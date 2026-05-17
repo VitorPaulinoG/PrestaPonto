@@ -5,25 +5,19 @@
   </header>
 
   <main class="page-content">
-    <section class="section-block">
-      <div class="section-block__header">
-        <h2>Categoria</h2>
-        <a href="#">Ver Todas</a>
-      </div>
-
+    <app-section-block title="Categoria" linkText="Ver Todas">
       <div class="category-grid">
         @for (category of categories; track category.title) {
           <app-category-card [title]="category.title" [icon]="category.icon" />
         }
       </div>
-    </section>
+    </app-section-block>
 
-    <section class="section-block">
-      <div class="section-block__header">
-        <h2>Em Destaque</h2>
-        <a href="#">Ver Todas</a>
-      </div>
-
+    <app-section-block 
+      title="Em Destaque" 
+      linkText="Ver Todos"
+      maxHeight="30rem" 
+    >
       <div class="list-stack">
         @for (provider of providers; track provider.name + provider.category) {
           <app-provider-list-item
@@ -34,6 +28,6 @@
           />
         }
       </div>
-    </section>
+    </app-section-block>
   </main>
 </app-mobile-shell>

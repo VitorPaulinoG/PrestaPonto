@@ -9,15 +9,17 @@ import {
   FEATURED_PROVIDERS,
   HOME_CATEGORY_CARDS,
 } from '../../models/marketplace.models';
+import { SectionBlockComponent } from '../../../../shared/components/section-block/section-block.component'; 
 
 @Component({
   selector: 'app-home-page',
   imports: [
     AppMobileShellComponent,
     SearchBarComponent,
+    SectionBlockComponent,
     CategoryCardComponent,
     ProviderListItemComponent,
-  ],
+],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
 })
