@@ -1,7 +1,7 @@
-<nav class="tabs" [attr.aria-label]="ariaLabel()">
+<nav class="grid grid-cols-2 bg-white" [attr.aria-label]="ariaLabel()">
   @for (item of items(); track item.routerLink) {
     <a
-      class="tabs__item"
+      class="flex items-center justify-center h-11 border-b-2 border-solid border-secondary-02 text-secondary-02 text-[0.875rem] font-semibold leading-none no-underline transition-colors duration-200 ease-out hover:text-primary-03 hover:border-primary-03"
       [routerLink]="item.routerLink"
       routerLinkActive="tabs__item--active"
     >

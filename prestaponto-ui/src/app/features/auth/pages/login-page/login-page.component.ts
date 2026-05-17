@@ -18,6 +18,14 @@ type LoginFormGroup = FormGroup<{
 })
 export class LoginPageComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);
+  
+  protected readonly emailValidationMessages: Record<string, string> = {
+    required: 'Campo obrigatório.',
+    email: 'Email inválido.',
+  };
+  protected readonly passwordValidationMessages: Record<string, string> = {
+    required: 'Campo obrigatório.',
+  };
 
   protected readonly form: LoginFormGroup = this.formBuilder.group({
     email: this.formBuilder.control('', [Validators.required, Validators.email]),

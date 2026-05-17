@@ -24,6 +24,23 @@ export class SignupPageComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);
 
   protected readonly roleOptions = AUTH_ROLE_OPTIONS;
+  
+  protected readonly nameValidationMessages: Record<string, string> = {
+    required: 'Campo obrigatório.',
+  };
+  protected readonly emailValidationMessages: Record<string, string> = {
+    required: 'Campo obrigatório.',
+    email: 'Email inválido.',
+  };
+
+  protected readonly passwordValidationMessages: Record<string, string> = {
+    required: 'Campo obrigatório.',
+  };
+
+  protected readonly confirmPasswordValidationMessages: Record<string, string> = {
+    required: 'Campo obrigatório.',
+  };
+
   protected readonly form: SignupFormGroup = this.formBuilder.group({
     role: this.formBuilder.control<AuthRole>('PROVIDER', Validators.required),
     name: this.formBuilder.control('', [Validators.required]),

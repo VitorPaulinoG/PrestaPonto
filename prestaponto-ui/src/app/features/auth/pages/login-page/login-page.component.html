@@ -6,6 +6,7 @@
       type="email"
       autocomplete="email"
       placeholder="Insira seu email"
+      [errorMessages]="emailValidationMessages"
     />
 
     <app-text-field
@@ -14,6 +15,7 @@
       type="password"
       autocomplete="current-password"
       placeholder="Insira sua senha"
+      [errorMessages]="passwordValidationMessages"
     />
 
     <button class="auth-form__link" type="button">Esqueceu Sua Senha?</button>

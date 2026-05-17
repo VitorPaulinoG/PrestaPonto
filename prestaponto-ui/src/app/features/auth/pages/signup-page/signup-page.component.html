@@ -7,14 +7,16 @@
       icon="person"
       autocomplete="name"
       placeholder="Insira seu nome"
+      [errorMessages]="nameValidationMessages"
     />
-
+      
     <app-text-field
       [control]="form.controls.email"
       icon="alternate_email"
       type="email"
       autocomplete="email"
       placeholder="Insira seu email"
+      [errorMessages]="emailValidationMessages"
     />
 
     <app-text-field
@@ -23,6 +25,7 @@
       type="password"
       autocomplete="new-password"
       placeholder="Insira sua senha"
+      [errorMessages]="passwordValidationMessages"
     />
 
     <app-text-field
@@ -31,6 +34,7 @@
       type="password"
       autocomplete="new-password"
       placeholder="Confirme sua senha"
+      [errorMessages]="confirmPasswordValidationMessages"
     />
 
     <app-button>
