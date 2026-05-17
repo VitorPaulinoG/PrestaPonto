@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { AppNavId, BottomNavItem } from '../../models/marketplace.models';
+import { BottomNavItem } from '../../models/marketplace.models';
 
 @Component({
   selector: 'app-bottom-nav',
@@ -11,5 +11,5 @@ import { AppNavId, BottomNavItem } from '../../models/marketplace.models';
 })
 export class BottomNavComponent {
   readonly items = input.required<BottomNavItem[]>();
-  readonly activeItem = input.required<AppNavId>();
+  readonly activeItem = input.required<string>();
 }

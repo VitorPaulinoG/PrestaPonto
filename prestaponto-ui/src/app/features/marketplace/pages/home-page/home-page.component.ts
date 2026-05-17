@@ -12,7 +12,6 @@ import {
 import { PageContentComponent } from '../../../../shared/components/page-content/page-content.component';
 import { HeroHeaderComponent } from '../../../../shared/components/hero-header/hero-header.component';
 import { SectionBlockComponent } from '../../../../shared/components/section-block/section-block.component';
-import { FilterDropdown } from "../../../../shared/components/filter-dropdown/filter-dropdown"; 
 
 @Component({
   selector: 'app-home-page',
@@ -23,8 +22,7 @@ import { FilterDropdown } from "../../../../shared/components/filter-dropdown/fi
     HeroHeaderComponent,
     SectionBlockComponent,
     CategoryCardComponent,
-    ProviderListItemComponent,
-    FilterDropdown
+    ProviderListItemComponent
 ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',

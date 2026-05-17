@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 
-import { AppNavId, BottomNavItem } from '../../models/marketplace.models';
+import { BottomNavItem } from '../../models/marketplace.models';
 import { BottomNavComponent } from '../bottom-nav/bottom-nav.component';
 
 @Component({
@@ -11,5 +11,5 @@ import { BottomNavComponent } from '../bottom-nav/bottom-nav.component';
 })
 export class AppMobileShellComponent {
   readonly navItems = input.required<BottomNavItem[]>();
-  readonly activeNav = input.required<AppNavId>();
+  readonly activeNav = input.required<string>();
 }

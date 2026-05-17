@@ -1,10 +1,9 @@
-export type AppNavId = 'home' | 'explore' | 'contracts' | 'profile' | 'catalog' | 'schedule' | 'history' | 'provider';
 
 export interface BottomNavItem {
-  id: AppNavId;
+  id: string;
   label: string;
   route: string;
-  icon: AppNavId;
+  icon: string;
 }
 
 export interface CategoryCard {
@@ -27,9 +26,9 @@ export interface ServiceCatalogItem {
 
 export const CLIENT_NAV_ITEMS: BottomNavItem[] = [
   { id: 'home', label: 'Início', route: '/home', icon: 'home' },
-  { id: 'explore', label: 'Explorar', route: '/home', icon: 'explore' },
-  { id: 'contracts', label: 'Contratos', route: '/home', icon: 'contracts' },
-  { id: 'profile', label: 'Perfil', route: '/home', icon: 'profile' },
+  { id: 'explore', label: 'Explorar', route: '/home', icon: 'search' },
+  { id: 'contracts', label: 'Contratos', route: '/home', icon: 'contract' },
+  { id: 'profile', label: 'Perfil', route: '/home', icon: 'person' },
 ];
 
 export const PROVIDER_NAV_ITEMS: BottomNavItem[] = [

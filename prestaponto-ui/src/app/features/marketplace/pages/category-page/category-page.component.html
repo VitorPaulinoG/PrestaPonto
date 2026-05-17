@@ -1,7 +1,10 @@
 <app-mobile-shell [navItems]="navItems" activeNav="home">
-  <app-hero-header title="Qual serviço você precisa hoje?">
-    <app-search-bar placeholder="Buscar Profissionais ou Serviços..." />
-  </app-hero-header>
+  <header class="flex items-center p-4 gap-2.5 bg-primary-02 text-white">
+    <span class="material-symbols-outlined" aria-hidden="true">
+      arrow_left_alt
+    </span>
+    <span class="text-base font-semibold">Categorias</span>
+  </header>
   <div class="flex p-2.5 gap-2.5 h-auto w-full bg-white border-b border-primary-02">
     <app-filter-dropdown 
       title="Buscar por:" 
