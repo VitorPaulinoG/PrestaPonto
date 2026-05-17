@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-button',
@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   templateUrl: './button.html',
 })
 export class Button {
-  
+  disabled = input<boolean>(false);
 }

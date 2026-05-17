@@ -37,7 +37,7 @@
       [errorMessages]="confirmPasswordValidationMessages"
     />
 
-    <app-button>
+    <app-button [disabled]="loading()">
       Sign Up
     </app-button>
   </form>
