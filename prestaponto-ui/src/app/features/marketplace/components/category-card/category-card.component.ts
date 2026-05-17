@@ -7,5 +7,5 @@ import { Component, input } from '@angular/core';
 })
 export class CategoryCardComponent {
   readonly title = input.required<string>();
-  readonly icon = input.required<'build' | 'beauty' | 'computer' | 'events' | 'cleaning' | 'care'>();
+  readonly icon = input.required<string>();
 }
