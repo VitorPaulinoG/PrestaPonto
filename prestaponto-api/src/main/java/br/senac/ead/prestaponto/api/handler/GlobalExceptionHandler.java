@@ -1,6 +1,8 @@
 package br.senac.ead.prestaponto.api.handler;
 
+import br.senac.ead.prestaponto.api.exception.ReservaConcorrenteException;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.CannotAcquireLockException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -74,6 +76,18 @@ public class GlobalExceptionHandler {
                 .map(fe -> fe.getField() + ": " + fe.getDefaultMessage())
                 .toList();
         return build(HttpStatus.BAD_REQUEST, errors.toString());
+    }
+
+    @ExceptionHandler(ReservaConcorrenteException.class)
+    public ResponseEntity<?> handleReservaConcorrente(ReservaConcorrenteException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("message", ex.getMessage()));
+    }
+
+    @ExceptionHandler(CannotAcquireLockException.class)
+    public ResponseEntity<?> handleLockTimeout(CannotAcquireLockException ex) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(Map.of("message", "Sistema ocupado. Tente novamente em instantes."));
     }
 
     private ResponseEntity<Map<String, Object>> build(HttpStatus status, String message) {

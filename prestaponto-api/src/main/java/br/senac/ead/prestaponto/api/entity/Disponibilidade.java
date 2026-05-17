@@ -5,9 +5,10 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 @Entity
-@Table(name = "disponibilidades")
+@Table(name = "tb_disponibilidade")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,8 +17,12 @@ import java.time.LocalTime;
 public class Disponibilidade {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Version
+    @Column(nullable = false)
+    private Long version;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prestador_id", nullable = false)
@@ -38,5 +43,12 @@ public class Disponibilidade {
 
     public boolean isReservada() {
         return this.cliente != null;
+    }
+
+    public void validarIntervalo() {
+        if (!getHoraInicio().isBefore(getHoraFim())) {
+            throw new IllegalArgumentException(
+                    "A hora de início deve ser anterior à hora de fim.");
+        }
     }
 }

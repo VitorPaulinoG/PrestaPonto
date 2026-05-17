@@ -11,7 +11,7 @@ import java.util.UUID;
 @Builder
 public class DisponibilidadeResponseDTO {
 
-    private Long id;
+    private UUID id;
     private UUID prestadorId;
     private UUID clienteId;
     private LocalDate diaSemana;

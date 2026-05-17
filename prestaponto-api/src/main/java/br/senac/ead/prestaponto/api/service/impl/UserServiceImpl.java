@@ -1,14 +1,14 @@
 package br.senac.ead.prestaponto.api.service.impl;
 
-import java.util.Optional;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import br.senac.ead.prestaponto.api.entity.User;
 import br.senac.ead.prestaponto.api.exception.EntityAlreadyExistsException;
 import br.senac.ead.prestaponto.api.repository.UserRepository;
 import br.senac.ead.prestaponto.api.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -36,4 +36,8 @@ public class UserServiceImpl implements UserService {
         return repository.findByEmail(email);
     }
 
+    @Override
+    public Optional<User> findById(UUID id) {
+        return repository.findById(id);
+    }
 }
