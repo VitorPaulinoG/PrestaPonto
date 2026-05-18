@@ -26,7 +26,7 @@ export interface ServiceCatalogItem {
 
 export const CLIENT_NAV_ITEMS: BottomNavItem[] = [
   { id: 'home', label: 'Início', route: '/home', icon: 'home' },
-  { id: 'explore', label: 'Explorar', route: '/home', icon: 'search' },
+  { id: 'explore', label: 'Explorar', route: '/explore', icon: 'search' },
   { id: 'contracts', label: 'Contratos', route: '/home', icon: 'contract' },
   { id: 'profile', label: 'Perfil', route: '/home', icon: 'person' },
 ];

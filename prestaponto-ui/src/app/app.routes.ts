@@ -38,6 +38,14 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'explore',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/marketplace/pages/explore-page/explore-page.component').then(
+        (module) => module.ExplorePageComponent,
+      ),
+  },
+  {
     path: 'provider/catalog',
     canActivate: [authGuard],
     loadComponent: () =>

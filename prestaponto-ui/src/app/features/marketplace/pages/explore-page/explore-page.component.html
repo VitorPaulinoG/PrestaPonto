@@ -1,0 +1,32 @@
+<app-mobile-shell [navItems]="navItems" activeNav="explore">
+  <app-hero-header title="Qual serviço você precisa hoje?">
+    <app-search-bar placeholder="Buscar Profissionais ou Serviços..." />
+  </app-hero-header>
+
+  <app-filter-bar>
+    <app-filter-dropdown
+      title="Buscar por:"
+      modalTitle="Buscar por"
+      [selectedOption]="getCurrentOption()?.label || 'Serviços'"
+      [isSelected]="true"
+      [options]="options"
+      (optionSelected)="onFilterChange($event)"
+    />
+  </app-filter-bar>
+
+  <app-page-content>
+    <app-section-block title="Serviços" maxHeight="100%">
+      <div class="list-stack">
+        @for (service of services; track service.serviceName + service.providerName) {
+          <app-explore-service-card
+            [serviceName]="service.serviceName"
+            [category]="service.category"
+            [providerName]="service.providerName"
+            [price]="service.price"
+            [rating]="service.rating"
+          />
+        }
+      </div>
+    </app-section-block>
+  </app-page-content>
+</app-mobile-shell>

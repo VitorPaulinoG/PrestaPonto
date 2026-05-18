@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { AppMobileShellComponent } from '../../components/app-mobile-shell/app-mobile-shell.component';
 import { CategoryCardComponent } from '../../components/category-card/category-card.component';
@@ -28,7 +29,12 @@ import { SectionBlockComponent } from '../../../../shared/components/section-blo
   styleUrl: './home-page.component.scss',
 })
 export class HomePageComponent {
+  private readonly router = inject(Router);
   protected readonly navItems = CLIENT_NAV_ITEMS;
   protected readonly categories = HOME_CATEGORY_CARDS;
   protected readonly providers = FEATURED_PROVIDERS;
+
+  protected onSearch(query: string): void {
+    this.router.navigate(['/explore'], { queryParams: { q: query } });
+  }
 }

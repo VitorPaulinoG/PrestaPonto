@@ -1,10 +1,17 @@
 <app-mobile-shell [navItems]="navItems" activeNav="home">
   <app-hero-header title="Qual serviço você precisa hoje?">
-    <app-search-bar placeholder="Buscar Profissionais ou Serviços..." />
+    <app-search-bar
+      placeholder="Buscar Profissionais ou Serviços..."
+      (search)="onSearch($event)"
+    />
   </app-hero-header>
   
   <app-page-content>
-    <app-section-block title="Categoria" linkText="Ver Todas">
+    <app-section-block 
+      title="Categoria" 
+      linkText="Ver Todas"
+      linkHref="/categories"
+    >
       <div class="category-grid">
         @for (category of categories; track category.title) {
           <app-category-card [title]="category.title" [icon]="category.icon" />
@@ -14,8 +21,9 @@
 
     <app-section-block
       title="Em Destaque"
-      linkText="Ver Todos"
       maxHeight="30rem"
+      linkText="Ver Todos"
+      linkHref="/providers"
     >
       <div class="list-stack">
         @for (provider of providers; track provider.name + provider.category) {

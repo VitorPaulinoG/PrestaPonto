@@ -1,23 +1,30 @@
 <app-mobile-shell [navItems]="navItems" activeNav="home">
   <header class="flex items-center p-4 gap-2.5 bg-primary-02 text-white">
-    <span class="material-symbols-outlined" aria-hidden="true">
+    <span 
+      class="material-symbols-outlined hover:cursor-pointer" 
+      aria-hidden="true"
+      (click)="back()"
+    >
       arrow_left_alt
     </span>
     <span class="text-base font-semibold">Categorias</span>
   </header>
-  <div class="flex p-2.5 gap-2.5 h-auto w-full bg-white border-b border-primary-02">
-    <app-filter-dropdown 
-      title="Buscar por:" 
-      selectedOption="Prestadores" 
-      [isSelected]="true"
+  <app-filter-bar>
+    <app-filter-dropdown
+      title="Buscar por:"
       modalTitle="Buscar por"
       [selectedOption]="getCurrentOption()?.label || 'providers'"
+      [isSelected]="true"
       [options]="options"
       (optionSelected)="onFilterChange($event)"
     />
-  </div>
+  </app-filter-bar>
   <app-page-content>
-    <app-section-block title="Categoria" linkText="Ver Todas" maxHeight="100%">
+    <app-section-block 
+      title="Categoria" 
+      maxHeight="100%"
+      linkText="Ver Todas" 
+    >
       <div class="grid grid-cols-3 gap-2.5">
         @for (category of categories; track category.title) {
           <app-category-card [title]="category.title" [icon]="category.icon" />

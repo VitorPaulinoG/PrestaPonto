@@ -1,0 +1,68 @@
+.explore-service-card {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-primary-02);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+}
+
+.explore-service-card__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.explore-service-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.explore-service-card__name,
+.explore-service-card__provider,
+.explore-service-card__price {
+  margin: 0;
+}
+
+.explore-service-card__name {
+  color: var(--color-primary-01);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.explore-service-card__provider {
+  margin-top: 0.125rem;
+  color: var(--color-primary-02);
+  font-size: 0.625rem;
+  line-height: 1.2;
+}
+
+.explore-service-card__price {
+  margin-top: 0.25rem;
+  color: var(--color-primary-02);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.explore-service-card__rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+  color: var(--color-primary-03);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.explore-service-card__rating svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
