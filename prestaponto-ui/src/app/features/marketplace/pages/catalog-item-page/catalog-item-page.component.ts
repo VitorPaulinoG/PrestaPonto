@@ -1,11 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AppMobileShellComponent } from '../../components/app-mobile-shell/app-mobile-shell.component';
 import { BasicHeaderComponent } from '../../../../shared/components/basic-header/basic-header.component';
 import { PageContentComponent } from '../../../../shared/components/page-content/page-content.component';
 import { CLIENT_NAV_ITEMS } from '../../models/marketplace.models';
-import { CatalogService } from '../../services/catalog.service';
+import { CatalogItem, CatalogService } from '../../services/catalog.service';
 
 @Component({
   selector: 'app-catalog-item-page',
@@ -20,11 +20,22 @@ export class CatalogItemPageComponent {
 
   protected readonly navItems = CLIENT_NAV_ITEMS;
 
-  protected readonly item = this.catalogService.getById(
-    this.route.snapshot.paramMap.get('id') || ''
-  );
+  protected readonly item = signal<CatalogItem | null>(null);
+
+  constructor() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.catalogService.findById(id).subscribe({
+        next: (data) => {
+          this.item.set(data);
+        },
+      });
+    }
+  }
+
 
   protected onBack(): void {
     this.router.navigate(['/explore']);
   }
+
 }

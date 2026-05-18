@@ -39,111 +39,87 @@ public class CatalogItemController {
     private final CatalogItemService service;
     private final ModelMapper modelMapper;
 
-    public CatalogItemController(CatalogItemService catalogItemService, ModelMapper modelMapper) {
-        this.service = catalogItemService;
+    public CatalogItemController(CatalogItemService service, ModelMapper modelMapper) {
+        this.service = service;
         this.modelMapper = modelMapper;
     }
 
-    @PreAuthorize("hasRole('PROVIDER')")
-    @Operation(
-        summary = "Registrar um novo serviço no catálogo do prestador", 
-        description = "Registra um novo serviço no catálogo do prestador com as informações fornecidas."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Serviço registrado com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
-    })
     @PostMapping
-    public ResponseEntity<?> register(
-        @Valid @RequestBody CreateCatalogItemRequest request,
-        @AuthenticationPrincipal User loggedUser
-    ) {
-        CatalogItem catalogItem = modelMapper.map(request, CatalogItem.class);
-        catalogItem.setProvider(loggedUser);
-
-        CatalogItem registeredItem = service.register(catalogItem);
-
-        URI uri = ServletUriComponentsBuilder
-            .fromCurrentRequest() 
-            .path("/{id}")
-            .buildAndExpand(registeredItem.getId())
-            .toUri();
-                
-        return ResponseEntity.created(uri).build();
-    }
-
-    @Operation(
-        summary = "Buscar serviços por filtros", 
-        description = "Busca serviços de acordo com a categoria e prestador."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Dados obtidos com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
-    })
-    @GetMapping
-    public ResponseEntity<?> findByFilter(
-        @RequestParam(required = false) UUID providerId, 
-        @RequestParam(required = false) String category, 
-        Pageable pageable
-    ) {
-        Page<GetCatalogItemResponse> response = service.findByFilter(providerId, category, pageable)
-            .map(item -> modelMapper.map(item, GetCatalogItemResponse.class));
-        
-        return ResponseEntity.ok(response);
-    }
-
-    @Operation(
-        summary = "Buscar serviço por id", 
-        description = "Busca um serviço através do id passado por parâmetro."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Dados obtidos com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
-    })
-    @GetMapping("/{id}")
-    public ResponseEntity<?> findById(
-        @NotNull(message = "O parâmetro 'id' é obrigatório") 
-        @PathVariable UUID id
-    ) {
-        GetCatalogItemResponse response = modelMapper.map(service.findById(id), GetCatalogItemResponse.class);
-        return ResponseEntity.ok(response);
-    }
-
     @PreAuthorize("hasRole('PROVIDER')")
-    @Operation(
-        summary = "Atualizar serviço por id", 
-        description = "Atualiza um serviço."
-    )
+    @Operation(summary = "Cadastrar um novo serviço no catálogo", description = "Adiciona um item ao catálogo de serviços do prestador autenticado.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = "Dados atualizados com sucesso"),
+        @ApiResponse(responseCode = "201", description = "Serviço cadastrado com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
+        @ApiResponse(responseCode = "403", description = "Usuário não autorizado"),
     })
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(
-        @NotNull(message = "O parâmetro 'id' é obrigatório") 
-        @PathVariable UUID id,
-        @Valid @RequestBody CreateCatalogItemRequest request,
-        @AuthenticationPrincipal User user
-    ) {
-        service.update(id, modelMapper.map(request, CatalogItem.class), user);
+    public ResponseEntity<GetCatalogItemResponse> register(@RequestBody @Valid CreateCatalogItemRequest request, @AuthenticationPrincipal User user) {
+        var catalogItem = modelMapper.map(request, CatalogItem.class);
+
+        catalogItem.setProvider(user);
+
+        var createdCatalogItem = service.register(catalogItem);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(createdCatalogItem.getId())
+            .toUri();
+
+        return ResponseEntity.created(location).body(modelMapper.map(createdCatalogItem, GetCatalogItemResponse.class));
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('PROVIDER')")
+    @Operation(summary = "Buscar serviço por ID", description = "Retorna os detalhes de um serviço específico.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Serviço encontrado"),
+        @ApiResponse(responseCode = "404", description = "Serviço não encontrado"),
+        @ApiResponse(responseCode = "403", description = "Usuário não autorizado"),
+    })
+    public ResponseEntity<GetCatalogItemResponse> findById(@PathVariable @NotNull UUID id) {
+        var catalogItem = service.findById(id);
+        return ResponseEntity.ok(modelMapper.map(catalogItem, GetCatalogItemResponse.class));
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('PROVIDER')")
+    @Operation(summary = "Remover serviço do catálogo", description = "Remove um serviço do catálogo.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Serviço removido com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Serviço não encontrado"),
+        @ApiResponse(responseCode = "403", description = "Usuário não autorizado"),
+    })
+    public ResponseEntity<Void> deleteById(@PathVariable @NotNull UUID id, @AuthenticationPrincipal User loggedUser) {
+        service.deleteById(id, loggedUser);
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(
-        summary = "Deletar um serviço por id", 
-        description = "Deleta um serviço."
-    )
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('PROVIDER')")
+    @Operation(summary = "Atualizar serviço do catálogo", description = "Atualiza um serviço do catálogo.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = "Dados removidos com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
+        @ApiResponse(responseCode = "200", description = "Serviço atualizado com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Serviço não encontrado"),
+        @ApiResponse(responseCode = "403", description = "Usuário não autorizado"),
     })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(
-        @NotNull(message = "O parâmetro 'id' é obrigatório") 
-        @PathVariable UUID id,
-        @AuthenticationPrincipal User user
-    ) {
-        service.deleteById(id, user);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<GetCatalogItemResponse> update(@PathVariable @NotNull UUID id, @RequestBody @Valid CreateCatalogItemRequest request, @AuthenticationPrincipal User loggedUser) {
+        var catalogItem = modelMapper.map(request, CatalogItem.class);
+        service.update(id, catalogItem, loggedUser);
+
+        return ResponseEntity.ok(modelMapper.map(catalogItem, GetCatalogItemResponse.class));
+    }
+
+    @GetMapping
+    @Operation(summary = "Listar serviços do catálogo", description = "Lista os serviços de catálogo com filtros opcionais de prestador, categoria e nome, suportando paginação.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de serviços retornada com sucesso"),
+    })
+    public ResponseEntity<Page<GetCatalogItemResponse>> findByFilter(
+            @RequestParam(required = false) UUID providerId,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String providerName,
+            Pageable pageable) {
+        Page<CatalogItem> catalogItems = service.findByFilter(providerId, category, name, providerName, pageable);
+        return ResponseEntity.ok(catalogItems.map(c -> modelMapper.map(c, GetCatalogItemResponse.class)));
     }
 }

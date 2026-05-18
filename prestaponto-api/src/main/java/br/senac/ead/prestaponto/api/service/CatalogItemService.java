@@ -13,7 +13,7 @@ public interface CatalogItemService {
 
     CatalogItem findById(UUID id);
 
-    Page<CatalogItem> findByFilter(UUID providerId, String category, Pageable pageable);
+    Page<CatalogItem> findByFilter(UUID providerId, String category, String name, String providerName, Pageable pageable);
 
     void deleteById(UUID id, User loggedUser);
 

@@ -34,43 +34,46 @@ public class CatalogItemServiceImpl implements CatalogItemService {
     }
 
     @Override
-    public Page<CatalogItem> findByFilter(UUID providerId, String category, Pageable pageable) {
-        if (providerId != null && (category != null && !category.isBlank())) 
-            return repository.findByProviderIdAndCategory(providerId, category, pageable);
-        if (providerId != null)
-            return repository.findByProviderId(providerId, pageable);
-        if (category != null && !category.isBlank())
-            return repository.findByCategory(category, pageable);
-        
-        return repository.findAll(pageable);
+    public Page<CatalogItem> findByFilter(UUID providerId, String category, String name, String providerName, Pageable pageable) {
+        if (providerId == null && (category == null || category.isBlank())
+            && (name == null || name.isBlank()) && (providerName == null || providerName.isBlank())) {
+            return repository.findAll(pageable);
+        }
+
+        var categoryPattern = (category == null || category.isBlank()) ? null : "%" + category + "%";
+        var namePattern = (name == null || name.isBlank()) ? null : "%" + name + "%";
+        var providerNamePattern = (providerName == null || providerName.isBlank()) ? null : "%" + providerName + "%";
+        return repository.findByFilter(providerId, categoryPattern, namePattern, providerNamePattern, pageable);
     }
 
     @Override
     public void deleteById(UUID id, User loggedUser) {
-        var catalogItem = findById(id);
+        var catalogItem =
+            repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("O item de catálogo não foi encontrado"));
 
-        verifyProperty(catalogItem, loggedUser);
-        
+        if (catalogItem.getProvider().getId() != loggedUser.getId()) {
+            throw new AccessDeniedException("O usuário não tem permissão para deletar este item do catálogo");
+        }
+
         repository.delete(catalogItem);
     }
 
     @Override
     public void update(UUID id, CatalogItem catalogItem, User loggedUser) {
-        var existingItem = findById(id);
-        verifyProperty(existingItem, loggedUser);
+        var catalogItemSaved =
+            repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("O item de catálogo não foi encontrado"));
 
-        existingItem.setName(catalogItem.getName());
-        existingItem.setDescription(catalogItem.getDescription());
-        existingItem.setCategory(catalogItem.getCategory());
-        existingItem.setPrice(catalogItem.getPrice());
+        if (catalogItemSaved.getProvider().getId() != loggedUser.getId()) {
+            throw new AccessDeniedException("O usuário não tem permissão para editar este item do catálogo");
+        }
 
-        repository.save(existingItem);
+        catalogItemSaved.setName(catalogItem.getName());
+        catalogItemSaved.setDescription(catalogItem.getDescription());
+        catalogItemSaved.setCategory(catalogItem.getCategory());
+        catalogItemSaved.setPrice(catalogItem.getPrice());
+
+        repository.save(catalogItemSaved);
     }
-
-    private void verifyProperty(CatalogItem existingEntity, User loggedUser) {
-        if (!existingEntity.getProvider().getId().equals(loggedUser.getId()))
-            throw new AccessDeniedException("O usuário não possui permissão para essa operação.");
-    }
-
-
 }

@@ -2,7 +2,8 @@
   <app-basic-header title="Detalhes do Serviço" (back)="onBack()" />
 
   <app-page-content>
-    @if (item) {
+  <app-page-content>
+    @if (item(); as item) {
       <div class="catalog-item">
         <div class="catalog-item__header">
           <h1 class="catalog-item__name">{{ item.title }}</h1>
@@ -36,5 +37,6 @@
     } @else {
       <p class="text-center text-primary-02">Serviço não encontrado.</p>
     }
+  </app-page-content>
   </app-page-content>
 </app-mobile-shell>

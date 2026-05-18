@@ -3,6 +3,7 @@
     <app-search-bar
       placeholder="Buscar Profissionais ou Serviços..."
       [value]="searchQuery()"
+      (search)="onSearch($event)"
     />
   </app-hero-header>
 
@@ -20,7 +21,7 @@
   <app-page-content>
     <app-section-block title="Serviços" maxHeight="100%">
       <div class="list-stack">
-        @for (service of services; track service.id) {
+        @for (service of items(); track service.id) {
           <app-explore-service-card
             class="hover:cursor-pointer"
             [serviceName]="service.title"
@@ -31,6 +32,12 @@
             (click)="onCardClick(service)"
           />
         }
+
+        @if (loading()) {
+          <div class="text-center py-4 text-primary-02">Carregando...</div>
+        }
+
+        <div #sentinel class="h-4"></div>
       </div>
     </app-section-block>
   </app-page-content>
