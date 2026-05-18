@@ -21,6 +21,7 @@ export interface CatalogItem {
   title: string;
   category: string;
   providerName: string;
+  providerId: string;
   price: string;
   rating: number;
   description: string;
@@ -86,6 +87,7 @@ export class CatalogService {
     title: item.name,
     category: item.category,
     providerName: item.provider?.name ?? '—',
+    providerId: item.provider?.id ?? '',
     price: `R$ ${item.price.toFixed(2)}`,
     rating: 4.5,
     description: item.description,

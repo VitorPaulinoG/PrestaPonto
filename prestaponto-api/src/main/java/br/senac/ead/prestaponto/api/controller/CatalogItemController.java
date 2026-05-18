@@ -68,7 +68,7 @@ public class CatalogItemController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('PROVIDER')")
+    @PreAuthorize("hasAnyRole('PROVIDER', 'CLIENT')")
     @Operation(summary = "Buscar serviço por ID", description = "Retorna os detalhes de um serviço específico.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Serviço encontrado"),
@@ -108,11 +108,12 @@ public class CatalogItemController {
         return ResponseEntity.ok(modelMapper.map(catalogItem, GetCatalogItemResponse.class));
     }
 
-    @GetMapping
+    @PreAuthorize("hasAnyRole('PROVIDER', 'CLIENT')")
     @Operation(summary = "Listar serviços do catálogo", description = "Lista os serviços de catálogo com filtros opcionais de prestador, categoria e nome, suportando paginação.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Lista de serviços retornada com sucesso"),
     })
+    @GetMapping
     public ResponseEntity<Page<GetCatalogItemResponse>> findByFilter(
             @RequestParam(required = false) UUID providerId,
             @RequestParam(required = false) String category,

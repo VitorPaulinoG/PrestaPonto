@@ -29,15 +29,15 @@ export interface ServiceCatalogItem {
 export const CLIENT_NAV_ITEMS: BottomNavItem[] = [
   { id: 'home', label: 'Início', route: '/home', icon: 'home' },
   { id: 'explore', label: 'Explorar', route: '/explore', icon: 'search' },
-  { id: 'contracts', label: 'Contratos', route: '/home', icon: 'contract' },
+  { id: 'contracts', label: 'Contratos', route: '/contracts', icon: 'contract' },
   { id: 'profile', label: 'Perfil', route: '/home', icon: 'person' },
 ];
 
 export const PROVIDER_NAV_ITEMS: BottomNavItem[] = [
-  { id: 'catalog', label: 'Catálogo', route: '/provider/catalog', icon: 'catalog' },
-  { id: 'schedule', label: 'Agenda', route: '/provider/catalog', icon: 'schedule' },
+  { id: 'catalog', label: 'Catálogo', route: '/provider/catalog', icon: 'menu_book' },
+  { id: 'schedule', label: 'Agenda', route: '/provider/catalog', icon: 'calendar_month' },
   { id: 'history', label: 'Histórico', route: '/provider/catalog', icon: 'history' },
-  { id: 'provider', label: 'Prestador', route: '/provider/catalog', icon: 'provider' },
+  { id: 'provider', label: 'Prestador', route: '/provider/catalog', icon: 'work' },
 ];
 
 export const HOME_CATEGORY_CARDS: CategoryCard[] = [

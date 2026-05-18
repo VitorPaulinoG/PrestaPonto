@@ -21,10 +21,12 @@ export class CatalogItemPageComponent {
   protected readonly navItems = CLIENT_NAV_ITEMS;
 
   protected readonly item = signal<CatalogItem | null>(null);
+  protected readonly catalogItemId = signal<string>('');
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
+      this.catalogItemId.set(id);
       this.catalogService.findById(id).subscribe({
         next: (data) => {
           this.item.set(data);
@@ -33,6 +35,13 @@ export class CatalogItemPageComponent {
     }
   }
 
+  protected onVerDisponibilidades(): void {
+    const item = this.item();
+    if (!item || !item.providerId) return;
+    this.router.navigate(['/disponibilidades', item.providerId], {
+      queryParams: { catalogItemId: item.id },
+    });
+  }
 
   protected onBack(): void {
     this.router.navigate(['/explore']);

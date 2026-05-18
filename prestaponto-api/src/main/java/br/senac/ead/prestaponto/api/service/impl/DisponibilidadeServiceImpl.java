@@ -30,7 +30,7 @@ public class DisponibilidadeServiceImpl implements DisponibilidadeService {
         disponibilidade.validarIntervalo();
         validarConflitoPrestador(prestador.getId(), disponibilidade);
         disponibilidade.setPrestador(buscarUser(prestador.getId()));
-        disponibilidade.setCatalogItem(null);
+        disponibilidade.setCatalogItemID(null);
 
         return repository.save(disponibilidade);
     }

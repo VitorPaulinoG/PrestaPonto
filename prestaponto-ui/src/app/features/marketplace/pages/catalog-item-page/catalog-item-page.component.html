@@ -2,7 +2,6 @@
   <app-basic-header title="Detalhes do Serviço" (back)="onBack()" />
 
   <app-page-content>
-  <app-page-content>
     @if (item(); as item) {
       <div class="catalog-item">
         <div class="catalog-item__header">
@@ -33,10 +32,16 @@
             <span class="catalog-item__detail-value">{{ item.price }}</span>
           </div>
         </div>
+
+        <button
+          class="disponibilidades-btn"
+          (click)="onVerDisponibilidades()"
+        >
+          Ver Disponibilidades do Prestador
+        </button>
       </div>
     } @else {
       <p class="text-center text-primary-02">Serviço não encontrado.</p>
     }
-  </app-page-content>
   </app-page-content>
 </app-mobile-shell>

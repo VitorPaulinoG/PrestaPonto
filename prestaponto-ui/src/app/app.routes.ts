@@ -54,6 +54,22 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'disponibilidades/:prestadorId',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import(
+        './features/marketplace/pages/disponibilidade-page/disponibilidade-page.component'
+      ).then((module) => module.DisponibilidadePageComponent),
+  },
+  {
+    path: 'contracts',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import(
+        './features/marketplace/pages/contracts-page/contracts-page.component'
+      ).then((module) => module.ContractsPageComponent),
+  },
+  {
     path: 'provider/catalog',
     canActivate: [authGuard],
     loadComponent: () =>

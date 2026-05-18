@@ -96,7 +96,7 @@ class DisponibilidadeConcorrenciaTest {
             executor.submit(() -> {
                 try {
                     startLatch.await();
-                    service.reservar(dispId, cliente, new CatalogItem());
+                    service.reservar(dispId, cliente, new CatalogItem().getId());
                     sucessos.incrementAndGet();
                 } catch (ReservaConcorrenteException | IllegalStateException ex) {
                     conflitos.incrementAndGet();
@@ -134,7 +134,7 @@ class DisponibilidadeConcorrenciaTest {
         long versionInicial = disponibilidadeRepository
                 .findById(disponibilidade.getId()).orElseThrow().getVersion();
 
-        service.reservar(disponibilidade.getId(), clientes.getFirst(), new CatalogItem());
+        service.reservar(disponibilidade.getId(), clientes.getFirst(), new CatalogItem().getId());
 
         long versionFinal = disponibilidadeRepository
                 .findById(disponibilidade.getId()).orElseThrow().getVersion();
@@ -147,10 +147,10 @@ class DisponibilidadeConcorrenciaTest {
     @Test
     @DisplayName("Tentar reservar horário já ocupado deve lançar ReservaConcorrenteException")
     void deveRejeitarReservaDuplicada() {
-        service.reservar(disponibilidade.getId(), clientes.get(0), new CatalogItem());
+        service.reservar(disponibilidade.getId(), clientes.get(0), new CatalogItem().getId());
 
         assertThatThrownBy(() ->
-                service.reservar(disponibilidade.getId(), clientes.get(1), new CatalogItem()))
+                service.reservar(disponibilidade.getId(), clientes.get(1), new CatalogItem().getId()))
                 .isInstanceOf(ReservaConcorrenteException.class);
     }
 
@@ -180,7 +180,7 @@ class DisponibilidadeConcorrenciaTest {
                 executor.submit(() -> {
                     try {
                         startLatch.await();
-                        service.reservar(dispId, cliente, new CatalogItem());
+                        service.reservar(dispId, cliente, new CatalogItem().getId());
                         sucessos.incrementAndGet();
                     } catch (ReservaConcorrenteException | IllegalStateException ignored) {
                     } catch (InterruptedException e) {
