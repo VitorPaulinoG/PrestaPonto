@@ -65,7 +65,6 @@ export class CatalogService {
     }
     httpParams = httpParams.set('page', String(params.page ?? 0));
     httpParams = httpParams.set('size', String(params.size ?? 20));
-    console.log(httpParams);
     return this.http.get<PageResponse<BackendCatalogItem>>(this.baseUrl, {
       params: httpParams,
     }).pipe(map(this.mapPageResponse));

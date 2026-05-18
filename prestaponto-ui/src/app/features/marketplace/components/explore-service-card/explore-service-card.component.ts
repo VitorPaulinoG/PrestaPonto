@@ -11,5 +11,4 @@ export class ExploreServiceCardComponent {
   readonly category = input.required<string>();
   readonly providerName = input.required<string>();
   readonly price = input.required<string>();
-  readonly rating = input.required<number>();
 }

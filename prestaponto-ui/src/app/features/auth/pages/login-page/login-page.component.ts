@@ -51,12 +51,10 @@ export class LoginPageComponent {
     this.authService.login(this.form.getRawValue()).subscribe({
       next: (response) => {
         this.tokenService.setToken(response.token);
-        console.log(response.token);
         this.router.navigate(['/home']);
       },
       error: (err) => {
         this.loading.set(false);
-        console.log(extractErrorMessage(err));
       },
     });
   }

@@ -82,7 +82,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy {
     } else if (this.currentFilter === 'providers') {
       filterParams.providerName = this.searchQuery();
     }
-    console.log(filterParams);
 
     this.catalogService.findByFilter(filterParams).subscribe({
       next: (resp) => {

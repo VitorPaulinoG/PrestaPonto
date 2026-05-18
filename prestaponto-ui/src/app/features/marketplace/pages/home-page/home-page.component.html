@@ -22,23 +22,5 @@
         }
       </div>
     </app-section-block>
-
-    <app-section-block
-      title="Em Destaque"
-      maxHeight="30rem"
-      linkText="Ver Todos"
-      linkHref="/providers"
-    >
-      <div class="list-stack">
-        @for (provider of providers; track provider.name + provider.category) {
-          <app-provider-list-item
-            [initials]="provider.initials"
-            [name]="provider.name"
-            [category]="provider.category"
-            [rating]="provider.rating"
-          />
-        }
-      </div>
-    </app-section-block>
   </app-page-content>
 </app-mobile-shell>

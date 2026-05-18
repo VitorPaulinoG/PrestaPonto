@@ -74,18 +74,10 @@ export class SignupPageComponent {
 
     this.authService.signup(payload).subscribe({
       next: () => {
-        console.log("CADASTRADO!");
         this.router.navigate(['/login']);
       },
       error: (err) => {
         this.loading.set(false);
-        console.log(extractFieldErrors(err));
-        console.log(extractErrorMessage(err));
-        // if (fieldErrors) {
-        //   this.serverErrors = fieldErrors;
-        // } else {
-        //   this.serverError.set(extractErrorMessage(err));
-        // }
       },
     });
   }
