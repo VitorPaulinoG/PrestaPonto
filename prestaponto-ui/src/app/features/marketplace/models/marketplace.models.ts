@@ -19,9 +19,11 @@ export interface ProviderHighlight {
 }
 
 export interface ServiceCatalogItem {
+  id: string;
   title: string;
   category: string;
   price: string;
+  description: string;
 }
 
 export const CLIENT_NAV_ITEMS: BottomNavItem[] = [
@@ -108,13 +110,17 @@ export const FEATURED_PROVIDERS: ProviderHighlight[] = [
 
 export const PROVIDER_SERVICES: ServiceCatalogItem[] = [
   {
+    id: '1',
     title: 'Aterramento Elétrico',
     category: 'Instalações Elétricas',
     price: 'R$ 90,00',
+    description: 'Serviço completo de aterramento elétrico residencial e comercial.',
   },
   {
+    id: '2',
     title: 'Instalação de tomadas e interruptores',
     category: 'Instalações Elétricas',
     price: 'R$ 55,00',
+    description: 'Instalação de tomadas e interruptores com fiação dedicada e proteção.',
   },
 ];

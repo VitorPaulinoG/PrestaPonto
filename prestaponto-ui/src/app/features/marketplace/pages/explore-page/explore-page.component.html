@@ -20,13 +20,15 @@
   <app-page-content>
     <app-section-block title="Serviços" maxHeight="100%">
       <div class="list-stack">
-        @for (service of services; track service.serviceName + service.providerName) {
+        @for (service of services; track service.id) {
           <app-explore-service-card
-            [serviceName]="service.serviceName"
+            class="hover:cursor-pointer"
+            [serviceName]="service.title"
             [category]="service.category"
             [providerName]="service.providerName"
             [price]="service.price"
             [rating]="service.rating"
+            (click)="onCardClick(service)"
           />
         }
       </div>

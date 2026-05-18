@@ -1,5 +1,5 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { HeroHeaderComponent } from '../../../../shared/components/hero-header/hero-header.component';
 import { PageContentComponent } from '../../../../shared/components/page-content/page-content.component';
@@ -11,14 +11,7 @@ import { ExploreServiceCardComponent } from '../../components/explore-service-ca
 import { FilterDropdown } from '../../../../shared/components/filter-dropdown/filter-dropdown';
 import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
 import { CLIENT_NAV_ITEMS } from '../../models/marketplace.models';
-
-export interface ExploreServiceItem {
-  serviceName: string;
-  category: string;
-  providerName: string;
-  price: string;
-  rating: number;
-}
+import { CatalogItem, CatalogService } from '../../services/catalog.service';
 
 @Component({
   selector: 'app-explore-page',
@@ -37,6 +30,8 @@ export interface ExploreServiceItem {
 })
 export class ExplorePageComponent {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly catalogService = inject(CatalogService);
 
   protected readonly searchQuery = signal<string>('');
   protected readonly navItems = CLIENT_NAV_ITEMS;
@@ -48,44 +43,7 @@ export class ExplorePageComponent {
   ];
 
   protected currentFilter = 'services';
-
-  protected readonly services: ExploreServiceItem[] = [
-    {
-      serviceName: 'Aterramento Elétrico',
-      category: 'Instalações Elétricas',
-      providerName: 'Fulano de Tal',
-      price: 'R$ 90,00',
-      rating: 4.9,
-    },
-    {
-      serviceName: 'Instalação de Tomadas',
-      category: 'Instalações Elétricas',
-      providerName: 'Beltrano de Tal',
-      price: 'R$ 55,00',
-      rating: 4.8,
-    },
-    {
-      serviceName: 'Pintura Residencial',
-      category: 'Pintura',
-      providerName: 'Cicrano de Tal',
-      price: 'R$ 200,00',
-      rating: 4.7,
-    },
-    {
-      serviceName: 'Faxina e Limpeza',
-      category: 'Limpeza',
-      providerName: 'Placeholder',
-      price: 'R$ 120,00',
-      rating: 4.5,
-    },
-    {
-      serviceName: 'Encanador 24h',
-      category: 'Hidráulica',
-      providerName: 'Anonymous',
-      price: 'R$ 150,00',
-      rating: 4.3,
-    },
-  ];
+  protected readonly services: CatalogItem[] = this.catalogService.getAll();
 
   constructor() {
     effect(() => {
@@ -107,5 +65,9 @@ export class ExplorePageComponent {
 
   protected onFilterChange(value: string): void {
     this.currentFilter = value;
+  }
+
+  protected onCardClick(service: CatalogItem): void {
+    this.router.navigate(['/catalog-item', service.id]);
   }
 }

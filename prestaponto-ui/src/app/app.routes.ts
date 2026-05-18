@@ -46,6 +46,14 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'catalog-item/:id',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/marketplace/pages/catalog-item-page/catalog-item-page.component').then(
+        (module) => module.CatalogItemPageComponent,
+      ),
+  },
+  {
     path: 'provider/catalog',
     canActivate: [authGuard],
     loadComponent: () =>
