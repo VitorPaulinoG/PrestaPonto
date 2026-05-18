@@ -1,7 +1,7 @@
 package br.senac.ead.prestaponto.api.handler;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -10,13 +10,24 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.senac.ead.prestaponto.api.exception.EntityAlreadyExistsException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ProblemDetail> handleAccessDeniedException(AccessDeniedException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(403);
+        problemDetail.setTitle("Access Denied");
+        problemDetail.setDetail(ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(problemDetail);
+    }
 
     @ExceptionHandler(EntityAlreadyExistsException.class)
     public ResponseEntity<ProblemDetail> handleEntityAlreadyExistsException(EntityAlreadyExistsException ex) {
@@ -40,8 +51,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ProblemDetail> handleException(Exception ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(500);
         problemDetail.setTitle("Internal Server Error");
-        problemDetail.setDetail(ex.getMessage());
-
+        problemDetail.setDetail("Um erro inesperado ocorreu. Por favor, tente novamente mais tarde.");
+        log.error(ex.getMessage());
+        
         return ResponseEntity.internalServerError().body(problemDetail);
     }
 
@@ -50,20 +62,9 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, Object>> handleBadRequest(IllegalArgumentException ex) {
-        return build(HttpStatus.BAD_REQUEST, ex.getMessage());
-    }
-
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<Map<String, Object>> handleConflict(IllegalStateException ex) {
         return build(HttpStatus.CONFLICT, ex.getMessage());
-    }
-
-    /** Sobreposição de propriedade: prestador tentando alterar agenda de outro, ou cliente cancelando reserva alheia. */
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Map<String, Object>> handleAccessDenied(AccessDeniedException ex) {
-        return build(HttpStatus.FORBIDDEN, ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -73,6 +74,7 @@ public class GlobalExceptionHandler {
                 .stream()
                 .map(fe -> fe.getField() + ": " + fe.getDefaultMessage())
                 .toList();
+
         return build(HttpStatus.BAD_REQUEST, errors.toString());
     }
 
