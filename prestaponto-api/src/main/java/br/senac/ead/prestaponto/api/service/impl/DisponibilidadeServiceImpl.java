@@ -88,7 +88,7 @@ public class DisponibilidadeServiceImpl implements DisponibilidadeService {
 
     @Override
     @Transactional
-    public Disponibilidade reservar(UUID id, User cliente, CatalogItem catalogItem) {
+    public Disponibilidade reservar(UUID id, User cliente, UUID catalogItemID) {
 
         Disponibilidade disponibilidade = buscarPorId(id);
 
@@ -100,7 +100,7 @@ public class DisponibilidadeServiceImpl implements DisponibilidadeService {
 
         disponibilidade.setCliente(buscarUser(cliente.getId()));
 
-        disponibilidade.setCatalogItem(catalogItem);
+        disponibilidade.setCatalogItemID(catalogItemID);
 
         return repository.save(disponibilidade);
     }

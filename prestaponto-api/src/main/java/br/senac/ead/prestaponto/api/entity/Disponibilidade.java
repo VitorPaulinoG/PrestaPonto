@@ -42,7 +42,7 @@ public class Disponibilidade {
 
     @ManyToOne
     @JoinColumn(name = "catalog_item_id")
-    private CatalogItem catalogItem;
+    private UUID catalogItemID;
 
     public boolean isReservada() {
         return this.cliente != null;

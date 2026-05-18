@@ -16,7 +16,7 @@ public interface DisponibilidadeService {
     
     void remover(UUID id, User prestador);
     
-    Disponibilidade reservar(UUID id, User cliente, CatalogItem catalogItem);
+    Disponibilidade reservar(UUID id, User cliente, UUID catalogItemID);
 
     Disponibilidade cancelarReserva(UUID id, User cliente);
     
