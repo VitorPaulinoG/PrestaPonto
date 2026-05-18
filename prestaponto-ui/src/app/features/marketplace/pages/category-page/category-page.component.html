@@ -9,21 +9,10 @@
     </span>
     <span class="text-base font-semibold">Categorias</span>
   </header>
-  <app-filter-bar>
-    <app-filter-dropdown
-      title="Buscar por:"
-      modalTitle="Buscar por"
-      [selectedOption]="getCurrentOption()?.label || 'providers'"
-      [isSelected]="true"
-      [options]="options"
-      (optionSelected)="onFilterChange($event)"
-    />
-  </app-filter-bar>
   <app-page-content>
     <app-section-block 
       title="Categoria" 
       maxHeight="100%"
-      linkText="Ver Todas" 
     >
       <div class="grid grid-cols-3 gap-2.5">
         @for (category of categories; track category.title) {
