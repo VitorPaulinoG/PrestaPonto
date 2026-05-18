@@ -20,9 +20,8 @@ public class Disponibilidade {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Version
-    @Column(nullable = false)
-    private Long version;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long version;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prestador_id", nullable = false)
@@ -41,14 +40,17 @@ public class Disponibilidade {
     @Column(name = "hora_fim", nullable = false)
     private LocalTime horaFim;
 
+    @ManyToOne
+    @JoinColumn(name = "catalog_item_id")
+    private CatalogItem catalogItem;
+
     public boolean isReservada() {
         return this.cliente != null;
     }
 
     public void validarIntervalo() {
         if (!getHoraInicio().isBefore(getHoraFim())) {
-            throw new IllegalArgumentException(
-                    "A hora de início deve ser anterior à hora de fim.");
+            throw new IllegalArgumentException("A hora de início deve ser anterior à hora de fim.");
         }
     }
 }

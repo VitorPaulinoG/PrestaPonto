@@ -1,84 +1,110 @@
 package br.senac.ead.prestaponto.api.controller;
 
-import br.senac.ead.prestaponto.api.dto.request.DisponibilidadeRequestDTO;
-import br.senac.ead.prestaponto.api.dto.response.DisponibilidadeResponseDTO;
-import br.senac.ead.prestaponto.api.service.DisponibilidadeService;
-import br.senac.ead.prestaponto.api.utils.UserResolverHelper;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
 import java.util.UUID;
 
+import br.senac.ead.prestaponto.api.entity.CatalogItem;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.senac.ead.prestaponto.api.dto.response.DisponibilidadeResponseDTO;
+import br.senac.ead.prestaponto.api.entity.User;
+import br.senac.ead.prestaponto.api.service.DisponibilidadeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/disponibilidades")
+@SecurityRequirement(name = "bearerAuth")
 @RequiredArgsConstructor
 public class DisponibilidadeController {
 
-    private final DisponibilidadeService disponibilidadeService;
-    private final UserResolverHelper userResolver; // helper que extrai o ID do JWT
+    private final DisponibilidadeService service;
+    private final ModelMapper modelMapper;
 
-    @PostMapping
-    @PreAuthorize("hasRole('PRESTADOR')")
-    public ResponseEntity<DisponibilidadeResponseDTO> cadastrar(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @Valid @RequestBody DisponibilidadeRequestDTO request) {
-
-        UUID prestadorId = userResolver.resolveId(userDetails);
-        DisponibilidadeResponseDTO response = disponibilidadeService.cadastrar(prestadorId, request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('PRESTADOR')")
-    public ResponseEntity<DisponibilidadeResponseDTO> atualizar(
-            @PathVariable UUID id,
-            @AuthenticationPrincipal UserDetails userDetails,
-            @Valid @RequestBody DisponibilidadeRequestDTO request) {
-
-        UUID prestadorId = userResolver.resolveId(userDetails);
-        DisponibilidadeResponseDTO response = disponibilidadeService.atualizar(id, prestadorId, request);
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping
-    @PreAuthorize("hasAnyRole('PRESTADOR', 'CLIENTE')")
-    public ResponseEntity<List<DisponibilidadeResponseDTO>> listar(
-            @RequestParam UUID prestadorId) {
-
-        return ResponseEntity.ok(disponibilidadeService.listarPorPrestador(prestadorId));
-    }
-
+    @PreAuthorize("hasAnyRole('PROVIDER', 'CLIENT')")
+    @Operation(
+        summary = "Buscar disponibilidade pelo id", 
+        description = "Busca uma disponibilidade pelo seu id."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
+    })
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('PRESTADOR', 'CLIENTE')")
     public ResponseEntity<DisponibilidadeResponseDTO> buscarPorId(@PathVariable UUID id) {
-        return ResponseEntity.ok(disponibilidadeService.buscarPorId(id));
+        
+        DisponibilidadeResponseDTO disponibilidade = modelMapper.map(service.buscarPorId(id), DisponibilidadeResponseDTO.class);
+        return ResponseEntity.ok(disponibilidade);
     }
 
-    @PostMapping("/{id}/reservar")
-    @PreAuthorize("hasRole('CLIENTE')")
-    public ResponseEntity<DisponibilidadeResponseDTO> reservar(
+    @PreAuthorize("hasRole('CLIENT')")
+    @Operation(
+        summary = "Buscar reservas do cliente", 
+        description = "Busca as reservas do cliente autenticado."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
+    })
+    @GetMapping("/reservas")
+    public ResponseEntity<Page<DisponibilidadeResponseDTO>> buscarReservas(
+        @AuthenticationPrincipal User cliente,
+        Pageable pageable
+    ) {
+        
+        Page<DisponibilidadeResponseDTO> disponibilidades = service.listarReservas(cliente, pageable)
+            .map(d -> modelMapper.map(d, DisponibilidadeResponseDTO.class));
+        return ResponseEntity.ok(disponibilidades);
+    }
+
+    @PreAuthorize("hasRole('CLIENT')")
+    @Operation(
+        summary = "Reservar horário de um prestador", 
+        description = "Reserva um horário específico de um prestador através do id da disponibilidade."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Horário reservado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
+    })
+    @PostMapping("/{id}")
+    public ResponseEntity<?> reservar(
             @PathVariable UUID id,
-            @AuthenticationPrincipal UserDetails userDetails) {
+            @AuthenticationPrincipal User cliente,
+            CatalogItem catalogItem) {
 
-        UUID clienteId = userResolver.resolveId(userDetails);
-        return ResponseEntity.ok(disponibilidadeService.reservar(id, clienteId));
+        service.reservar(id, cliente, catalogItem);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/{id}/reservar")
-    @PreAuthorize("hasRole('CLIENTE')")
+    @PreAuthorize("hasRole('CLIENT')")
+    @Operation(
+        summary = "Cancelar reserva", 
+        description = "Cancela um horário reservado pelo cliente."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Reserva cancelada com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
+    })
+    @DeleteMapping("/{id}")
     public ResponseEntity<DisponibilidadeResponseDTO> cancelarReserva(
             @PathVariable UUID id,
-            @AuthenticationPrincipal UserDetails userDetails) {
+            @AuthenticationPrincipal User cliente) {
 
-        UUID clienteId = userResolver.resolveId(userDetails);
-        return ResponseEntity.ok(disponibilidadeService.cancelarReserva(id, clienteId));
+        service.cancelarReserva(id, cliente);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,8 +1,8 @@
 package br.senac.ead.prestaponto.api.entity;
 
 public enum UserType {
-    CLIENTE("cliente"),
-    PRESTADOR("prestador");
+    CLIENT("client"),
+    PROVIDER("provider");
 
     private final String description;
 

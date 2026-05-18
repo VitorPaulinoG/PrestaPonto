@@ -1,5 +1,6 @@
 package br.senac.ead.prestaponto.api.service.impl;
 
+import br.senac.ead.prestaponto.api.entity.CatalogItem;
 import br.senac.ead.prestaponto.api.entity.Disponibilidade;
 import br.senac.ead.prestaponto.api.entity.User;
 import br.senac.ead.prestaponto.api.entity.UserType;
@@ -55,7 +56,7 @@ class DisponibilidadeConcorrenciaTest {
                 .name("Prestador Teste")
                 .email("prestador@test.com")
                 .password("senha123")
-                .userType(UserType.PRESTADOR)
+                .userType(UserType.PROVIDER)
                 .build());
 
         clientes = new ArrayList<>();
@@ -64,7 +65,7 @@ class DisponibilidadeConcorrenciaTest {
                     .name("Cliente " + i)
                     .email("cliente" + i + "@test.com")
                     .password("senha123")
-                    .userType(UserType.CLIENTE)
+                    .userType(UserType.CLIENT)
                     .build()));
         }
 
@@ -95,7 +96,7 @@ class DisponibilidadeConcorrenciaTest {
             executor.submit(() -> {
                 try {
                     startLatch.await();
-                    service.reservar(dispId, cliente.getId());
+                    service.reservar(dispId, cliente, new CatalogItem());
                     sucessos.incrementAndGet();
                 } catch (ReservaConcorrenteException | IllegalStateException ex) {
                     conflitos.incrementAndGet();
@@ -133,7 +134,7 @@ class DisponibilidadeConcorrenciaTest {
         long versionInicial = disponibilidadeRepository
                 .findById(disponibilidade.getId()).orElseThrow().getVersion();
 
-        service.reservar(disponibilidade.getId(), clientes.get(0).getId());
+        service.reservar(disponibilidade.getId(), clientes.getFirst(), new CatalogItem());
 
         long versionFinal = disponibilidadeRepository
                 .findById(disponibilidade.getId()).orElseThrow().getVersion();
@@ -146,10 +147,10 @@ class DisponibilidadeConcorrenciaTest {
     @Test
     @DisplayName("Tentar reservar horário já ocupado deve lançar ReservaConcorrenteException")
     void deveRejeitarReservaDuplicada() {
-        service.reservar(disponibilidade.getId(), clientes.get(0).getId());
+        service.reservar(disponibilidade.getId(), clientes.get(0), new CatalogItem());
 
         assertThatThrownBy(() ->
-                service.reservar(disponibilidade.getId(), clientes.get(1).getId()))
+                service.reservar(disponibilidade.getId(), clientes.get(1), new CatalogItem()))
                 .isInstanceOf(ReservaConcorrenteException.class);
     }
 
@@ -179,7 +180,7 @@ class DisponibilidadeConcorrenciaTest {
                 executor.submit(() -> {
                     try {
                         startLatch.await();
-                        service.reservar(dispId, cliente.getId());
+                        service.reservar(dispId, cliente, new CatalogItem());
                         sucessos.incrementAndGet();
                     } catch (ReservaConcorrenteException | IllegalStateException ignored) {
                     } catch (InterruptedException e) {
