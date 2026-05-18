@@ -1,5 +1,6 @@
 package br.senac.ead.prestaponto.api.service.impl;
 
+import br.senac.ead.prestaponto.api.entity.CatalogItem;
 import br.senac.ead.prestaponto.api.entity.Disponibilidade;
 import br.senac.ead.prestaponto.api.entity.User;
 import br.senac.ead.prestaponto.api.repository.DisponibilidadeRepository;
@@ -7,7 +8,6 @@ import br.senac.ead.prestaponto.api.service.DisponibilidadeService;
 import br.senac.ead.prestaponto.api.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
@@ -26,10 +26,11 @@ public class DisponibilidadeServiceImpl implements DisponibilidadeService {
     @Override
     @Transactional
     public Disponibilidade cadastrar(User prestador, Disponibilidade disponibilidade) {
-        
+
         disponibilidade.validarIntervalo();
         validarConflitoPrestador(prestador.getId(), disponibilidade);
         disponibilidade.setPrestador(buscarUser(prestador.getId()));
+        disponibilidade.setCatalogItem(null);
 
         return repository.save(disponibilidade);
     }
@@ -37,9 +38,9 @@ public class DisponibilidadeServiceImpl implements DisponibilidadeService {
     @Override
     @Transactional
     public Disponibilidade atualizar(
-        UUID id, 
-        Disponibilidade disponibilidade, 
-        User prestador
+            UUID id,
+            Disponibilidade disponibilidade,
+            User prestador
     ) {
 
         Disponibilidade disponbilidadeRegistrada = buscarPorId(id);
@@ -58,8 +59,8 @@ public class DisponibilidadeServiceImpl implements DisponibilidadeService {
     @Override
     @Transactional
     public void remover(
-        UUID id,
-        User prestador
+            UUID id,
+            User prestador
     ) {
         Disponibilidade disponbilidadeRegistrada = buscarPorId(id);
         verificarPropriedadePrestador(disponbilidadeRegistrada, prestador);
@@ -87,7 +88,7 @@ public class DisponibilidadeServiceImpl implements DisponibilidadeService {
 
     @Override
     @Transactional
-    public Disponibilidade reservar(UUID id, User cliente) {
+    public Disponibilidade reservar(UUID id, User cliente, UUID catalogItemID) {
 
         Disponibilidade disponibilidade = buscarPorId(id);
 
@@ -98,6 +99,8 @@ public class DisponibilidadeServiceImpl implements DisponibilidadeService {
         validarConflitoCliente(cliente.getId(), disponibilidade);
 
         disponibilidade.setCliente(buscarUser(cliente.getId()));
+
+        disponibilidade.setCatalogItemID(catalogItemID);
 
         return repository.save(disponibilidade);
     }
@@ -111,7 +114,7 @@ public class DisponibilidadeServiceImpl implements DisponibilidadeService {
         if (!disponibilidade.isReservada()) {
             throw new IllegalStateException("Este horário não possui reserva.");
         }
-        
+
         verificarPropriedadeCliente(disponibilidade, cliente.getId());
 
         disponibilidade.setCliente(null);
@@ -131,8 +134,8 @@ public class DisponibilidadeServiceImpl implements DisponibilidadeService {
     }
 
     private void validarConflitoPrestador(
-        UUID prestadorId,
-        Disponibilidade disponibilidade
+            UUID prestadorId,
+            Disponibilidade disponibilidade
     ) {
         boolean conflito = repository.existeConflitoPrestador(
                 prestadorId,
@@ -150,8 +153,8 @@ public class DisponibilidadeServiceImpl implements DisponibilidadeService {
     }
 
     private void validarConflitoCliente(
-        UUID clienteId,
-        Disponibilidade disponibilidade
+            UUID clienteId,
+            Disponibilidade disponibilidade
     ) {
         boolean conflito = repository.existeConflitoCliente(
                 clienteId,

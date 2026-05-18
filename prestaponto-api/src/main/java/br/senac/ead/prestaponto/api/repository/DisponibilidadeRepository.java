@@ -36,7 +36,7 @@ public interface DisponibilidadeRepository extends JpaRepository<Disponibilidade
             @Param("horaInicio") LocalTime horaInicio,
             @Param("horaFim") LocalTime horaFim,
             @Param("excluirId") UUID excluirId
-            
+
     );
 
     @Query("""
