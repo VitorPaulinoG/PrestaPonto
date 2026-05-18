@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-category-card',
@@ -8,4 +8,6 @@ import { Component, input } from '@angular/core';
 export class CategoryCardComponent {
   readonly title = input.required<string>();
   readonly icon = input.required<string>();
+
+  categorySelected = output<string>();
 }

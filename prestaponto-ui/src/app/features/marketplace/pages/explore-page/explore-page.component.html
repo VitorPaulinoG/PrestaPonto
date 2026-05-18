@@ -1,6 +1,9 @@
 <app-mobile-shell [navItems]="navItems" activeNav="explore">
   <app-hero-header title="Qual serviço você precisa hoje?">
-    <app-search-bar placeholder="Buscar Profissionais ou Serviços..." />
+    <app-search-bar
+      placeholder="Buscar Profissionais ou Serviços..."
+      [value]="searchQuery()"
+    />
   </app-hero-header>
 
   <app-filter-bar>

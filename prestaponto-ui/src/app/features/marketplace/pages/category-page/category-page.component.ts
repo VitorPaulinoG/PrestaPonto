@@ -21,4 +21,8 @@ export class CategoryPageComponent {
   back() {
     this.router.navigate(['/home']);
   }
+
+  protected onCategoryClick(category: string): void {
+    this.router.navigate(['/explore'], { queryParams: { q: category, filter: 'categories' } });
+  }
 }

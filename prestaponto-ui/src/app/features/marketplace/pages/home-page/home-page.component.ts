@@ -37,4 +37,8 @@ export class HomePageComponent {
   protected onSearch(query: string): void {
     this.router.navigate(['/explore'], { queryParams: { q: query } });
   }
+
+  protected onCategoryClick(category: string): void {
+    this.router.navigate(['/explore'], { queryParams: { q: category, filter: 'categories' } });
+  }
 }

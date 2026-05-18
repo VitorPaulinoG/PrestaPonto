@@ -16,7 +16,11 @@
     >
       <div class="grid grid-cols-3 gap-2.5">
         @for (category of categories; track category.title) {
-          <app-category-card [title]="category.title" [icon]="category.icon" />
+          <app-category-card
+            [title]="category.title"
+            [icon]="category.icon"
+            (categorySelected)="onCategoryClick($event)"
+          />
         }
       </div>
     </app-section-block>

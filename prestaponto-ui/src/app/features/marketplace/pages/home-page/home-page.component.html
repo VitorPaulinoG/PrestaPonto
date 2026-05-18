@@ -14,7 +14,11 @@
     >
       <div class="category-grid">
         @for (category of categories; track category.title) {
-          <app-category-card [title]="category.title" [icon]="category.icon" />
+          <app-category-card
+            [title]="category.title"
+            [icon]="category.icon"
+            (categorySelected)="onCategoryClick($event)"
+          />
         }
       </div>
     </app-section-block>

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { HeroHeaderComponent } from '../../../../shared/components/hero-header/hero-header.component';
 import { PageContentComponent } from '../../../../shared/components/page-content/page-content.component';
@@ -35,6 +36,9 @@ export interface ExploreServiceItem {
   styleUrl: './explore-page.component.scss',
 })
 export class ExplorePageComponent {
+  private readonly route = inject(ActivatedRoute);
+
+  protected readonly searchQuery = signal<string>('');
   protected readonly navItems = CLIENT_NAV_ITEMS;
 
   protected readonly options: BottomSheetOption[] = [
@@ -82,6 +86,20 @@ export class ExplorePageComponent {
       rating: 4.3,
     },
   ];
+
+  constructor() {
+    effect(() => {
+      const params = this.route.snapshot.queryParams;
+      const q = params['q'];
+      const filter = params['filter'];
+      if (q) {
+        this.searchQuery.set(q);
+      }
+      if (filter && this.options.some((o) => o.value === filter)) {
+        this.currentFilter = filter;
+      }
+    });
+  }
 
   protected getCurrentOption(): BottomSheetOption | undefined {
     return this.options.find((x) => x.value === this.currentFilter);
