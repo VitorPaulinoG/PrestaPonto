@@ -1,8 +1,8 @@
 <app-mobile-shell [navItems]="navItems" activeNav="catalog">
-  <app-page-topbar title="Cadastrar Serviço" backRoute="/provider/catalog" />
+  <app-basic-header [title]="'Cadastrar Serviço'" (back)="onBack()" />
 
-  <main class="service-create-page">
-    <form class="service-create-page__form" [formGroup]="form" (ngSubmit)="submit()">
+  <main class="flex flex-col overflow-y-auto px-[var(--spacing-md)] pt-[var(--spacing-md)] pb-[var(--spacing-lg)]">
+    <form class="flex flex-col gap-[var(--spacing-sm)]" [formGroup]="form" (ngSubmit)="submit()">
       <app-labeled-input
         label="Nome:"
         placeholder="Ex: Aterramento Elétrico"
@@ -29,7 +29,7 @@
         inputMode="decimal"
       />
 
-      <button class="service-create-page__submit" type="submit">Cadastrar</button>
+      <button class="mt-[var(--spacing-md)] bg-[var(--color-primary-02)] text-[var(--color-white)] h-12 rounded-[0.875rem] font-semibold text-sm tracking-wide" type="submit">Cadastrar</button>
     </form>
   </main>
 </app-mobile-shell>

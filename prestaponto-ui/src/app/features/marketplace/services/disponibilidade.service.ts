@@ -61,4 +61,15 @@ export class DisponibilidadeService {
       { params },
     );
   }
+
+  getReservadasPorPrestador(page?: number, size?: number): Observable<PageResponse<Disponibilidade>> {
+    let params = new HttpParams();
+    if (page !== undefined) params = params.set('page', String(page));
+    if (size !== undefined) params = params.set('size', String(size));
+
+    return this.http.get<PageResponse<Disponibilidade>>(
+      `${this.baseUrl}/prestadores/disponibilidades/reservadas`,
+      { params },
+    );
+  }
 }

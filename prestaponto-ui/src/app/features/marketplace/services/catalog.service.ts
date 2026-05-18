@@ -42,6 +42,28 @@ export class CatalogService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiUrl}/catalog`;
 
+  findMyCatalogItems(params: {
+    name?: string;
+    page?: number;
+    size?: number;
+  }): Observable<PageResponse<CatalogItem>> {
+    let httpParams = new HttpParams();
+    if (params.name) {
+      httpParams = httpParams.set('name', params.name);
+    }
+    httpParams = httpParams.set('page', String(params.page ?? 0));
+    httpParams = httpParams.set('size', String(params.size ?? 20));
+    return this.http.get<PageResponse<BackendCatalogItem>>(`${this.baseUrl}/me`, {
+      params: httpParams,
+    }).pipe(map(this.mapPageResponse));
+  }
+
+  register(request: { name: string; description: string; category: string; price: number }): Observable<CatalogItem> {
+    return this.http.post<BackendCatalogItem>(this.baseUrl, request).pipe(
+      map(this.mapItem),
+    );
+  }
+
   findByFilter(params: {
     providerId?: string;
     category?: string;

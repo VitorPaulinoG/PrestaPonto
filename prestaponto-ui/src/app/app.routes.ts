@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -23,7 +24,8 @@ export const routes: Routes = [
   },
   {
     path: 'home',
-    canActivate: [authGuard],
+    canActivate: [roleGuard],
+    data: { roles: ['CLIENT'] },
     loadComponent: () =>
       import('./features/marketplace/pages/home-page/home-page.component').then(
         (module) => module.HomePageComponent,
@@ -31,7 +33,8 @@ export const routes: Routes = [
   },
   {
     path: 'categories',
-    canActivate: [authGuard],
+    canActivate: [roleGuard],
+    data: { roles: ['CLIENT'] },
     loadComponent: () =>
       import('./features/marketplace/pages/category-page/category-page.component').then(
         (module) => module.CategoryPageComponent,
@@ -39,7 +42,8 @@ export const routes: Routes = [
   },
   {
     path: 'explore',
-    canActivate: [authGuard],
+    canActivate: [roleGuard],
+    data: { roles: ['CLIENT'] },
     loadComponent: () =>
       import('./features/marketplace/pages/explore-page/explore-page.component').then(
         (module) => module.ExplorePageComponent,
@@ -47,7 +51,8 @@ export const routes: Routes = [
   },
   {
     path: 'catalog-item/:id',
-    canActivate: [authGuard],
+    canActivate: [roleGuard],
+    data: { roles: ['CLIENT'] },
     loadComponent: () =>
       import('./features/marketplace/pages/catalog-item-page/catalog-item-page.component').then(
         (module) => module.CatalogItemPageComponent,
@@ -55,7 +60,8 @@ export const routes: Routes = [
   },
   {
     path: 'disponibilidades/:prestadorId',
-    canActivate: [authGuard],
+    canActivate: [roleGuard],
+    data: { roles: ['CLIENT'] },
     loadComponent: () =>
       import(
         './features/marketplace/pages/disponibilidade-page/disponibilidade-page.component'
@@ -63,7 +69,8 @@ export const routes: Routes = [
   },
   {
     path: 'contracts',
-    canActivate: [authGuard],
+    canActivate: [roleGuard],
+    data: { roles: ['CLIENT'] },
     loadComponent: () =>
       import(
         './features/marketplace/pages/contracts-page/contracts-page.component'
@@ -84,6 +91,14 @@ export const routes: Routes = [
       import(
         './features/marketplace/pages/provider-service-create-page/provider-service-create-page.component'
       ).then((module) => module.ProviderServiceCreatePageComponent),
+  },
+  {
+    path: 'provider/agenda',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import(
+        './features/marketplace/pages/provider-agenda-page/provider-agenda-page.component'
+      ).then((module) => module.ProviderAgendaPageComponent),
   },
   {
     path: '**',

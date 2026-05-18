@@ -6,7 +6,6 @@ import { TextField } from "../../../../shared/components/text-field/text-field";
 import { AuthService } from '../../../../core/services/auth.service';
 import { TokenService } from '../../../../core/services/token.service';
 import { Router } from '@angular/router';
-import { extractErrorMessage } from '../../../../core/utils/api-error.utils';
 
 type LoginFormGroup = FormGroup<{
   email: FormControl<string>;
@@ -51,7 +50,9 @@ export class LoginPageComponent {
     this.authService.login(this.form.getRawValue()).subscribe({
       next: (response) => {
         this.tokenService.setToken(response.token);
-        this.router.navigate(['/home']);
+        const role = this.tokenService.getRole();
+        const destination = role === 'PROVIDER' ? '/provider/catalog' : '/home';
+        this.router.navigate([destination]);
       },
       error: (err) => {
         this.loading.set(false);

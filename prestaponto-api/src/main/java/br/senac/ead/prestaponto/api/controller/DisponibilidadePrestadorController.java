@@ -127,6 +127,26 @@ public class DisponibilidadePrestadorController {
     
         return ResponseEntity.ok(disponibilidades);
     }
+    @PreAuthorize("hasRole('PROVIDER')")
+    @Operation(
+        summary = "Listar disponibilidades reservadas do prestador autenticado",
+        description = "Lista todas as disponibilidades em que o cliente não é nulo (reservadas) do prestador logado."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de disponibilidades reservadas retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Usuário não autorizado"),
+    })
+    @GetMapping("/reservadas")
+    public ResponseEntity<Page<DisponibilidadeResponseDTO>> listarReservadas(
+            @AuthenticationPrincipal User user,
+            Pageable pageable) {
+        Page<Disponibilidade> disponibilidades = disponibilidadeService.listarReservadasPorPrestador(user, pageable);
+        return ResponseEntity.ok(disponibilidades.map(d -> {
+            var result = modelMapper.map(d, DisponibilidadeResponseDTO.class);
+            result.setReservada(d.isReservada());
+            return result;
+        }));
+    }
 
 
 

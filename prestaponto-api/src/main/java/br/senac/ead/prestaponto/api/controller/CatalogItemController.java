@@ -108,6 +108,21 @@ public class CatalogItemController {
         return ResponseEntity.ok(modelMapper.map(catalogItem, GetCatalogItemResponse.class));
     }
 
+    @PreAuthorize("hasRole('PROVIDER')")
+    @Operation(summary = "Listar serviços do prestador autenticado", description = "Lista os serviços do catálogo do prestador logado, com filtro opcional por nome.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de serviços retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Usuário não autorizado"),
+    })
+    @GetMapping("/me")
+    public ResponseEntity<Page<GetCatalogItemResponse>> findMyCatalogItems(
+            @RequestParam(required = false) String name,
+            @AuthenticationPrincipal User user,
+            Pageable pageable) {
+        Page<CatalogItem> catalogItems = service.findByFilter(user.getId(), null, name, null, pageable);
+        return ResponseEntity.ok(catalogItems.map(c -> modelMapper.map(c, GetCatalogItemResponse.class)));
+    }
+
     @PreAuthorize("hasAnyRole('PROVIDER', 'CLIENT')")
     @Operation(summary = "Listar serviços do catálogo", description = "Lista os serviços de catálogo com filtros opcionais de prestador, categoria e nome, suportando paginação.")
     @ApiResponses(value = {

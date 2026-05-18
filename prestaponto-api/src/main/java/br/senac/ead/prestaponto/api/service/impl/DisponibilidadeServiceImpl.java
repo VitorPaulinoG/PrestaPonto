@@ -80,6 +80,11 @@ public class DisponibilidadeServiceImpl implements DisponibilidadeService {
 
     @Override
     @Transactional(readOnly = true)
+    public Page<Disponibilidade> listarReservadasPorPrestador(User prestador, Pageable pageable) {
+        return repository.findByPrestadorIdAndClienteIsNotNull(prestador.getId(), pageable);
+    }
+    @Override
+    @Transactional(readOnly = true)
     public Disponibilidade buscarPorId(UUID id) {
         return repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(

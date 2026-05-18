@@ -35,9 +35,8 @@ export const CLIENT_NAV_ITEMS: BottomNavItem[] = [
 
 export const PROVIDER_NAV_ITEMS: BottomNavItem[] = [
   { id: 'catalog', label: 'Catálogo', route: '/provider/catalog', icon: 'menu_book' },
-  { id: 'schedule', label: 'Agenda', route: '/provider/catalog', icon: 'calendar_month' },
-  { id: 'history', label: 'Histórico', route: '/provider/catalog', icon: 'history' },
-  { id: 'provider', label: 'Prestador', route: '/provider/catalog', icon: 'work' },
+  { id: 'schedule', label: 'Agenda', route: '/provider/agenda', icon: 'calendar_month' },
+  { id: 'profile', label: 'Perfil', route: '/home', icon: 'person' },
 ];
 
 export const HOME_CATEGORY_CARDS: CategoryCard[] = [
