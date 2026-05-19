@@ -105,7 +105,7 @@ public class DisponibilidadePrestadorController {
 
     @PreAuthorize("hasAnyRole('PROVIDER', 'CLIENT')")
     @Operation(
-        summary = "Listar disponibilidades de um prestador", 
+        summary = "Listar disponibilidades de um prestador",
         description = "Lista as disponibilidades pelo id do prestador."
     )
     @ApiResponses(value = {
@@ -115,18 +115,40 @@ public class DisponibilidadePrestadorController {
     @GetMapping
     public ResponseEntity<Page<DisponibilidadeResponseDTO>> listar(
         @RequestParam UUID prestadorId,
-        Pageable pageable        
+        Pageable pageable
     ) {
-        
+
         Page<DisponibilidadeResponseDTO> disponibilidades = disponibilidadeService.listarPorPrestador(prestadorId, pageable)
             .map(d -> {
                 var result = modelMapper.map(d, DisponibilidadeResponseDTO.class);
                 result.setReservada(d.isReservada());
                 return result;
             });
-    
+
         return ResponseEntity.ok(disponibilidades);
     }
+
+    @PreAuthorize("hasRole('PROVIDER')")
+    @Operation(
+        summary = "Listar disponibilidades do prestador autenticado",
+        description = "Lista todas as disponibilidades cadastradas pelo prestador logado."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Usuário não autorizado"),
+    })
+    @GetMapping("/me")
+    public ResponseEntity<Page<DisponibilidadeResponseDTO>> listarMinhas(
+            @AuthenticationPrincipal User user,
+            Pageable pageable) {
+        Page<Disponibilidade> disponibilidades = disponibilidadeService.listarPorPrestador(user.getId(), pageable);
+        return ResponseEntity.ok(disponibilidades.map(d -> {
+            var result = modelMapper.map(d, DisponibilidadeResponseDTO.class);
+            result.setReservada(d.isReservada());
+            return result;
+        }));
+    }
+
     @PreAuthorize("hasRole('PROVIDER')")
     @Operation(
         summary = "Listar disponibilidades reservadas do prestador autenticado",

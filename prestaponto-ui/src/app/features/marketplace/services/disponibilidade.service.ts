@@ -51,6 +51,24 @@ export class DisponibilidadeService {
     );
   }
 
+  getMinhasDisponibilidades(page?: number, size?: number): Observable<PageResponse<Disponibilidade>> {
+    let params = new HttpParams();
+    if (page !== undefined) params = params.set('page', String(page));
+    if (size !== undefined) params = params.set('size', String(size));
+
+    return this.http.get<PageResponse<Disponibilidade>>(
+      `${this.baseUrl}/prestadores/disponibilidades/me`,
+      { params },
+    );
+  }
+
+  cadastrar(request: { diaSemana: string; horaInicio: string; horaFim: string }): Observable<Disponibilidade> {
+    return this.http.post<Disponibilidade>(
+      `${this.baseUrl}/prestadores/disponibilidades`,
+      request,
+    );
+  }
+
   getReservas(page?: number, size?: number): Observable<PageResponse<Disponibilidade>> {
     let params = new HttpParams();
     if (page !== undefined) params = params.set('page', String(page));

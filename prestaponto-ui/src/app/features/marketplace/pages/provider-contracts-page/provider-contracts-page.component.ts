@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 
 import { AppMobileShellComponent } from '../../components/app-mobile-shell/app-mobile-shell.component';
@@ -11,18 +11,17 @@ import { DisponibilidadeService, Disponibilidade } from '../../services/disponib
 import { PROVIDER_NAV_ITEMS } from '../../models/marketplace.models';
 
 @Component({
-  selector: 'app-provider-agenda-page',
+  selector: 'app-provider-contracts-page',
   imports: [
-    RouterLink,
     AppMobileShellComponent,
     BasicHeaderComponent,
     PageContentComponent,
     SectionBlockComponent,
     DisponibilidadeCardComponent,
   ],
-  templateUrl: './provider-agenda-page.component.html',
+  templateUrl: './provider-contracts-page.component.html',
 })
-export class ProviderAgendaPageComponent implements OnInit {
+export class ProviderContractsPageComponent implements OnInit {
   private readonly disponibilidadeService = inject(DisponibilidadeService);
   private readonly router = inject(Router);
 
@@ -32,21 +31,21 @@ export class ProviderAgendaPageComponent implements OnInit {
   protected readonly error = signal<string | null>(null);
 
   ngOnInit(): void {
-    this.loadAgenda();
+    this.loadContratos();
   }
 
   protected onBack(): void {
     this.router.navigate(['/provider/catalog']);
   }
 
-  private loadAgenda(): void {
+  private loadContratos(): void {
     this.loading.set(true);
     this.disponibilidadeService
-      .getMinhasDisponibilidades(0, 50)
+      .getReservadasPorPrestador(0, 50)
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (page) => this.disponibilidades.set(page.content),
-        error: () => this.error.set('Erro ao carregar agenda.'),
+        error: () => this.error.set('Erro ao carregar reservas.'),
       });
   }
 }

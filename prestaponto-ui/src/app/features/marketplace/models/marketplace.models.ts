@@ -35,7 +35,8 @@ export const CLIENT_NAV_ITEMS: BottomNavItem[] = [
 
 export const PROVIDER_NAV_ITEMS: BottomNavItem[] = [
   { id: 'catalog', label: 'Catálogo', route: '/provider/catalog', icon: 'menu_book' },
-  { id: 'schedule', label: 'Agenda', route: '/provider/agenda', icon: 'calendar_month' },
+  { id: 'contracts', label: 'Contratos', route: '/provider/contracts', icon: 'contract' },
+  { id: 'agenda', label: 'Agenda', route: '/provider/agenda', icon: 'calendar_month' },
   { id: 'profile', label: 'Perfil', route: '/home', icon: 'person' },
 ];
 

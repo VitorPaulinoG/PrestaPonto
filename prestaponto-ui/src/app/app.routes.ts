@@ -93,12 +93,28 @@ export const routes: Routes = [
       ).then((module) => module.ProviderServiceCreatePageComponent),
   },
   {
+    path: 'provider/contracts',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import(
+        './features/marketplace/pages/provider-contracts-page/provider-contracts-page.component'
+      ).then((module) => module.ProviderContractsPageComponent),
+  },
+  {
     path: 'provider/agenda',
     canActivate: [authGuard],
     loadComponent: () =>
       import(
         './features/marketplace/pages/provider-agenda-page/provider-agenda-page.component'
       ).then((module) => module.ProviderAgendaPageComponent),
+  },
+  {
+    path: 'provider/agenda/new',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import(
+        './features/marketplace/pages/provider-agenda-create-page/provider-agenda-create-page.component'
+      ).then((module) => module.ProviderAgendaCreatePageComponent),
   },
   {
     path: '**',

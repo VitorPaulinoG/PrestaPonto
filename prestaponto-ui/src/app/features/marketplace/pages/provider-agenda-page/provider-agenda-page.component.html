@@ -1,15 +1,15 @@
-<app-mobile-shell [navItems]="navItems" activeNav="schedule">
+<app-mobile-shell [navItems]="navItems" activeNav="agenda">
   <app-basic-header [title]="'Agenda'" (back)="onBack()" />
 
-  <app-page-content>
+  <main class="relative flex-1 flex flex-col overflow-y-auto px-[var(--spacing-md)] pt-[var(--spacing-md)] pb-[var(--spacing-lg)]">
     @if (loading()) {
       <p class="text-sm text-[var(--color-neutral-04)]">Carregando...</p>
     } @else if (error()) {
       <p class="text-sm text-[var(--color-error)]">{{ error() }}</p>
     } @else {
-      <app-section-block title="Reservas">
+      <app-section-block title="Horarios">
         @if (disponibilidades().length === 0) {
-          <p class="text-sm text-[var(--color-neutral-04)] m-0">Nenhuma reserva encontrada.</p>
+          <p class="text-sm text-[var(--color-neutral-04)] m-0">Nenhum horario cadastrado.</p>
         } @else {
           <ul class="flex flex-col gap-[var(--spacing-sm)]">
             @for (disp of disponibilidades(); track disp.id) {
@@ -19,7 +19,7 @@
                   [diaSemana]="disp.diaSemana"
                   [horaInicio]="disp.horaInicio"
                   [horaFim]="disp.horaFim"
-                  [reservada]="true"
+                  [reservada]="disp.reservada"
                 />
               </li>
             }
@@ -27,5 +27,15 @@
         }
       </app-section-block>
     }
-  </app-page-content>
+
+    <a
+      class="absolute right-[1.5rem] bottom-[1.625rem] inline-flex items-center justify-center w-12 h-12 rounded-[var(--radius-sm)] bg-[var(--color-white)] text-[var(--color-primary-03)]"
+      routerLink="/provider/agenda/new"
+      aria-label="Cadastrar horario"
+    >
+      <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14M5 12h14" />
+      </svg>
+    </a>
+  </main>
 </app-mobile-shell>
