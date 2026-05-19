@@ -1,6 +1,6 @@
 # PrestaPonto
 
-PrestaPonto e uma plataforma de agendamento de servicos orientada a dispositivos moveis e baseada na web, que atua como um marketplace especializado para servicos gerais. O objetivo central do projeto e eliminar a fragmentacao digital e a ineficiencia dos processos manuais, que resultam em atritos para clientes e em problemas operacionais como overbooking para prestadores autonomos.
+PrestaPonto é uma plataforma de agendamento de servicos orientada a dispositivos moveis e baseada na web, que atua como um marketplace especializado para servicos gerais. O objetivo central do projeto e eliminar a fragmentacao digital e a ineficiencia dos processos manuais, que resultam em atritos para clientes e em problemas operacionais como overbooking para prestadores autonomos, causando gasto de tempo e retrabalho. 
 
 ## Desenvolvedores
 - Alexandre Aguiar Leite
@@ -12,8 +12,10 @@ PrestaPonto e uma plataforma de agendamento de servicos orientada a dispositivos
 - Thiago Estevão Da Silva
 - Vitor Paulino Gonçalves
 
-## Visao Geral
+  ## Video do Projeto
+https://youtu.be/OudarYoqgKY?si=EV_Hmoe4sSrW5LUE
 
+  ## Visao Geral
 O repositorio esta organizado em:
 - `prestaponto-api`: backend Spring Boot
 - `prestaponto-ui`: frontend Angular
