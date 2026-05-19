@@ -1,0 +1,30 @@
+<div class="select-field" [class.select-field-open]="isOpen()">
+  <button
+    class="select-field-trigger"
+    type="button"
+    [attr.aria-expanded]="isOpen()"
+    aria-haspopup="listbox"
+    (click)="toggleDropdown()"
+    (blur)="handleBlur($event)"
+  >
+    <span class="select-field-value">{{ selectedLabel() }}</span>
+    <span class="material-symbols-outlined" aria-hidden="true">keyboard_arrow_down</span>
+  </button>
+
+  @if (isOpen()) {
+    <div class="select-field-dropdown" role="listbox">
+      @for (option of options(); track option.value) {
+        <button
+          class="select-field-option"
+          type="button"
+          role="option"
+          [class.select-field-option-selected]="option.value === selectedValue()"
+          [attr.aria-selected]="option.value === selectedValue()"
+          (click)="selectOption(option.value)"
+        >
+          {{ option.label }}
+        </button>
+      }
+    </div>
+  }
+</div>

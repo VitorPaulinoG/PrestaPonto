@@ -24,6 +24,8 @@ public interface DisponibilidadeService {
     
     Page<Disponibilidade> listarPorPrestador(UUID prestadorId, Pageable pageable);
 
+    Page<Disponibilidade> listarReservadasPorPrestador(User prestador, Pageable pageable);
+
     Disponibilidade buscarPorId(UUID id);
 
 }

@@ -1,0 +1,49 @@
+<app-mobile-shell [navItems]="navItems" activeNav="explore">
+  <app-basic-header title="Disponibilidades" (back)="onBack()" />
+
+  <app-page-content>
+    @if (successMessage()) {
+      <div class="mensagem-sucesso">{{ successMessage() }}</div>
+    }
+
+    <app-section-block title="Horários" maxHeight="100%">
+      <div class="list-stack">
+        @for (slot of disponibilidades(); track slot.id) {
+          <app-disponibilidade-card
+            [id]="slot.id"
+            [diaSemana]="slot.diaSemana"
+            [horaInicio]="slot.horaInicio"
+            [horaFim]="slot.horaFim"
+            [reservada]="slot.reservada"
+            (click)="onCardClick($event)"
+          />
+        }
+
+        @if (loading()) {
+          <div class="text-center py-4 text-primary-02">Carregando...</div>
+        }
+      </div>
+    </app-section-block>
+  </app-page-content>
+</app-mobile-shell>
+
+@if (sheetOpen()) {
+  <div class="backdrop" (click)="closeSheet()">
+    <div class="sheet" [class.visible]="sheetVisible()" (click)="$event.stopPropagation()">
+      <div class="sheet__header">
+        <h3>Reservar horário</h3>
+        <button type="button" class="close-btn" (click)="closeSheet()">&times;</button>
+      </div>
+      <p class="sheet__text">
+        Deseja reservar este horário para o serviço?
+      </p>
+      <button
+        class="sheet__action"
+        [disabled]="reservando()"
+        (click)="onReservar()"
+      >
+        {{ reservando() ? 'Reservando...' : 'Reservar' }}
+      </button>
+    </div>
+  </div>
+}

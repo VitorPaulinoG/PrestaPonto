@@ -1,0 +1,28 @@
+<app-mobile-shell [navItems]="navItems" activeNav="home">
+  <header class="flex items-center p-4 gap-2.5 bg-primary-02 text-white">
+    <span 
+      class="material-symbols-outlined hover:cursor-pointer" 
+      aria-hidden="true"
+      (click)="back()"
+    >
+      arrow_left_alt
+    </span>
+    <span class="text-base font-semibold">Categorias</span>
+  </header>
+  <app-page-content>
+    <app-section-block 
+      title="Categoria" 
+      maxHeight="100%"
+    >
+      <div class="grid grid-cols-3 gap-2.5">
+        @for (category of categories; track category.title) {
+          <app-category-card
+            [title]="category.title"
+            [icon]="category.icon"
+            (categorySelected)="onCategoryClick($event)"
+          />
+        }
+      </div>
+    </app-section-block>
+  </app-page-content>
+</app-mobile-shell>

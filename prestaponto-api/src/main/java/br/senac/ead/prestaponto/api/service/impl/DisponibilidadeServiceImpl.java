@@ -30,7 +30,7 @@ public class DisponibilidadeServiceImpl implements DisponibilidadeService {
         disponibilidade.validarIntervalo();
         validarConflitoPrestador(prestador.getId(), disponibilidade);
         disponibilidade.setPrestador(buscarUser(prestador.getId()));
-        disponibilidade.setCatalogItem(null);
+        disponibilidade.setCatalogItemID(null);
 
         return repository.save(disponibilidade);
     }
@@ -78,6 +78,11 @@ public class DisponibilidadeServiceImpl implements DisponibilidadeService {
         return repository.findByPrestadorId(id, pageable);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Disponibilidade> listarReservadasPorPrestador(User prestador, Pageable pageable) {
+        return repository.findByPrestadorIdAndClienteIsNotNull(prestador.getId(), pageable);
+    }
     @Override
     @Transactional(readOnly = true)
     public Disponibilidade buscarPorId(UUID id) {

@@ -1,0 +1,15 @@
+<nav class="bottom-nav" aria-label="Navegação principal">
+  @for (item of items(); track item.id) {
+    <a
+      class="bottom-nav__item"
+      [class.bottom-nav__item--active]="item.id === activeItem()"
+      [routerLink]="item.route"
+    >
+      <span class="bottom-nav__icon" aria-hidden="true">
+        <span class="material-symbols-outlined" >{{item.icon}}</span>
+          
+      </span>
+      <span>{{ item.label }}</span>
+    </a>
+  }
+</nav>

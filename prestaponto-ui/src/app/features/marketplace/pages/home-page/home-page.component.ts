@@ -1,0 +1,44 @@
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { AppMobileShellComponent } from '../../components/app-mobile-shell/app-mobile-shell.component';
+import { CategoryCardComponent } from '../../components/category-card/category-card.component';
+import { ProviderListItemComponent } from '../../components/provider-list-item/provider-list-item.component';
+import { SearchBarComponent } from '../../components/search-bar/search-bar.component';
+import {
+  CLIENT_NAV_ITEMS,
+  FEATURED_PROVIDERS,
+  HOME_CATEGORY_CARDS,
+} from '../../models/marketplace.models';
+import { PageContentComponent } from '../../../../shared/components/page-content/page-content.component';
+import { HeroHeaderComponent } from '../../../../shared/components/hero-header/hero-header.component';
+import { SectionBlockComponent } from '../../../../shared/components/section-block/section-block.component';
+
+@Component({
+  selector: 'app-home-page',
+  imports: [
+    AppMobileShellComponent,
+    SearchBarComponent,
+    PageContentComponent,
+    HeroHeaderComponent,
+    SectionBlockComponent,
+    CategoryCardComponent,
+    ProviderListItemComponent
+],
+  templateUrl: './home-page.component.html',
+  styleUrl: './home-page.component.scss',
+})
+export class HomePageComponent {
+  private readonly router = inject(Router);
+  protected readonly navItems = CLIENT_NAV_ITEMS;
+  protected readonly categories = HOME_CATEGORY_CARDS;
+  protected readonly providers = FEATURED_PROVIDERS;
+
+  protected onSearch(query: string): void {
+    this.router.navigate(['/explore'], { queryParams: { q: query } });
+  }
+
+  protected onCategoryClick(category: string): void {
+    this.router.navigate(['/explore'], { queryParams: { q: category, filter: 'categories' } });
+  }
+}

@@ -1,0 +1,43 @@
+<app-mobile-shell [navItems]="navItems" activeNav="explore">
+  <app-hero-header title="Qual serviço você precisa hoje?">
+    <app-search-bar
+      placeholder="Buscar Profissionais ou Serviços..."
+      [value]="searchQuery()"
+      (search)="onSearch($event)"
+    />
+  </app-hero-header>
+
+  <app-filter-bar>
+    <app-filter-dropdown
+      title="Buscar por:"
+      modalTitle="Buscar por"
+      [selectedOption]="getCurrentOption()?.label || 'Serviços'"
+      [isSelected]="true"
+      [options]="options"
+      (optionSelected)="onFilterChange($event)"
+    />
+  </app-filter-bar>
+
+  <app-page-content>
+    <app-section-block title="Serviços" maxHeight="100%">
+      <div class="list-stack">
+        @for (service of items(); track service.id) {
+          <app-explore-service-card
+            class="hover:cursor-pointer"
+            [serviceName]="service.title"
+            [category]="service.category"
+            [providerName]="service.providerName"
+            [price]="service.price"
+            (click)="onCardClick(service)"
+          />
+        }
+
+        @if (loading()) {
+          <div class="text-center py-4 text-primary-02">Carregando...</div>
+        }
+
+        <div #sentinel class="h-4"></div>
+      </div>
+    </app-section-block>
+  </app-page-content>
+</app-mobile-shell>

@@ -1,0 +1,27 @@
+<app-mobile-shell [navItems]="navItems" activeNav="agenda">
+  <app-basic-header [title]="'Cadastrar Horario'" (back)="onBack()" />
+
+  <main class="flex flex-col overflow-y-auto px-[var(--spacing-md)] pt-[var(--spacing-md)] pb-[var(--spacing-lg)]">
+    <form class="flex flex-col gap-[var(--spacing-sm)]" [formGroup]="form" (ngSubmit)="submit()">
+      <app-labeled-input
+        label="Data"
+        placeholder="Ex: 2026-05-18"
+        [control]="form.controls.diaSemana"
+      />
+
+      <app-labeled-input
+        label="Hora Inicio"
+        placeholder="Ex: 08:00"
+        [control]="form.controls.horaInicio"
+      />
+
+      <app-labeled-input
+        label="Hora Fim"
+        placeholder="Ex: 17:00"
+        [control]="form.controls.horaFim"
+      />
+
+      <button class="mt-[var(--spacing-md)] bg-[var(--color-primary-02)] text-[var(--color-white)] h-12 rounded-[0.875rem] font-semibold text-sm tracking-wide" type="submit">Cadastrar</button>
+    </form>
+  </main>
+</app-mobile-shell>

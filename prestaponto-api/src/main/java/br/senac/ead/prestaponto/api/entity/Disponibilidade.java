@@ -20,7 +20,7 @@ public class Disponibilidade {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Version
     private long version;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -40,8 +40,7 @@ public class Disponibilidade {
     @Column(name = "hora_fim", nullable = false)
     private LocalTime horaFim;
 
-    @ManyToOne
-    @JoinColumn(name = "catalog_item_id")
+    @Column(name = "catalog_item_id")
     private UUID catalogItemID;
 
     public boolean isReservada() {

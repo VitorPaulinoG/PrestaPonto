@@ -1,0 +1,44 @@
+<app-auth-shell>
+  <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+    <app-select-field [control]="form.controls.role" [options]="roleOptions"/>
+
+    <app-text-field
+      [control]="form.controls.name"
+      icon="person"
+      autocomplete="name"
+      placeholder="Insira seu nome"
+      [errorMessages]="nameValidationMessages"
+    />
+      
+    <app-text-field
+      [control]="form.controls.email"
+      icon="alternate_email"
+      type="email"
+      autocomplete="email"
+      placeholder="Insira seu email"
+      [errorMessages]="emailValidationMessages"
+    />
+
+    <app-text-field
+      [control]="form.controls.password"
+      icon="key_vertical"
+      type="password"
+      autocomplete="new-password"
+      placeholder="Insira sua senha"
+      [errorMessages]="passwordValidationMessages"
+    />
+
+    <app-text-field
+      [control]="form.controls.confirmPassword"
+      icon="key_vertical"
+      type="password"
+      autocomplete="new-password"
+      placeholder="Confirme sua senha"
+      [errorMessages]="confirmPasswordValidationMessages"
+    />
+
+    <app-button [disabled]="loading()">
+      Sign Up
+    </app-button>
+  </form>
+</app-auth-shell>

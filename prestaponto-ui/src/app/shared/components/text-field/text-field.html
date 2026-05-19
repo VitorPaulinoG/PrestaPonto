@@ -1,0 +1,23 @@
+<label class="flex items-center gap-2.5 min-h-12 p-2.5 rounded-lg bg-white focus-within:ring-[3px] focus-within:ring-primary-03/20"
+       [class.ring-2]="errorMessage"
+       [class.ring-error]="errorMessage"
+>
+  <span class="field-icon inline-flex items-center justify-center w-8.5 min-w-8.5 text-primary-03 [&_.material-symbols-outlined]:text-[1.5rem] [&_.material-symbols-outlined]:text-current"
+        aria-hidden="true"
+        [class.text-error!]="errorMessage"
+  >
+    <span class="material-symbols-outlined">{{icon()}}</span>
+  </span>
+  <input
+    class="field-input w-full border-0 p-0 text-primary-01 text-[1rem] leading-5 bg-transparent outline-none placeholder-primary-03"
+    [class.text-error!]="errorMessage"
+    [type]="type()"
+    [formControl]="control()"
+    [placeholder]="placeholder()"
+    [autocomplete]="autocomplete()"
+  />
+</label>
+
+@if (errorMessage) {
+  <p class="text-error text-[0.875rem] leading-5 mt-1.5 min-h-[1.25rem]">{{ errorMessage }}</p>
+}

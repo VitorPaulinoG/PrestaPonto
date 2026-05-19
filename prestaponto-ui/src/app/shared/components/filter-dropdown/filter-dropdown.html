@@ -1,0 +1,23 @@
+<div
+  class="flex items-center rounded-full p-2.5 gap-2.5 bg-primary-02
+    max-w-auto max-h-auto h-[30px] cursor-pointer select-none"
+  [class.text-white]="isSelected()"
+  [class.text-primary-02]="isSelected()"
+  (click)="modal.open()"
+>
+  <div class="flex items-center gap-1">
+    <div class="text-3 font-semibold">{{ title() }}</div>
+    <div>{{ selectedOption() }}</div>
+  </div>
+  <span class="material-symbols-outlined" aria-hidden="true">
+    keyboard_arrow_down
+  </span>
+</div>
+
+<app-bottom-sheet-modal
+  #modal
+  [title]="modalTitle() ?? title()"
+  [options]="options()"
+  [selectedValue]="selectedOption()"
+  (selected)="onOptionSelected($event)"
+/>

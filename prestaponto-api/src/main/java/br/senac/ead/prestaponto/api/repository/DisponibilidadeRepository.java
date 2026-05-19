@@ -54,4 +54,5 @@ public interface DisponibilidadeRepository extends JpaRepository<Disponibilidade
             @Param("horaFim") LocalTime horaFim
     );
 
+    Page<Disponibilidade> findByPrestadorIdAndClienteIsNotNull(UUID prestadorId, Pageable pageable);
 }

@@ -1,0 +1,26 @@
+<app-mobile-shell [navItems]="navItems" activeNav="home">
+  <app-hero-header title="Qual serviço você precisa hoje?">
+    <app-search-bar
+      placeholder="Buscar Profissionais ou Serviços..."
+      (search)="onSearch($event)"
+    />
+  </app-hero-header>
+  
+  <app-page-content>
+    <app-section-block 
+      title="Categoria" 
+      linkText="Ver Todas"
+      linkHref="/categories"
+    >
+      <div class="category-grid">
+        @for (category of categories; track category.title) {
+          <app-category-card
+            [title]="category.title"
+            [icon]="category.icon"
+            (categorySelected)="onCategoryClick($event)"
+          />
+        }
+      </div>
+    </app-section-block>
+  </app-page-content>
+</app-mobile-shell>

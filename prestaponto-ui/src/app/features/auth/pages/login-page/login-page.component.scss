@@ -1,0 +1,21 @@
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  width: 100%;
+}
+
+.auth-form__link {
+  align-self: flex-start;
+  border: 0;
+  padding: 0;
+  color: var(--color-primary-01);
+  font-size: 0.75rem;
+  line-height: 1;
+  background: transparent;
+}
+
+.auth-form__link:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus-ring);
+}

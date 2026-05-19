@@ -1,0 +1,23 @@
+<app-mobile-shell [navItems]="navItems" activeNav="contracts">
+  <app-basic-header title="Meus Contratos" (back)="onBack()" />
+
+  <app-page-content>
+    <app-section-block title="Reservas ativas" maxHeight="100%">
+      <div class="list-stack">
+        @for (reserva of reservas(); track reserva.id) {
+          <app-disponibilidade-card
+            [id]="reserva.id"
+            [diaSemana]="reserva.diaSemana"
+            [horaInicio]="reserva.horaInicio"
+            [horaFim]="reserva.horaFim"
+            [reservada]="reserva.reservada"
+          />
+        }
+
+        @if (loading()) {
+          <div class="text-center py-4 text-primary-02">Carregando...</div>
+        }
+      </div>
+    </app-section-block>
+  </app-page-content>
+</app-mobile-shell>

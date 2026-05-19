@@ -1,0 +1,8 @@
+<header class="page-topbar">
+  @if (backRoute()) {
+    <a class="page-topbar__back" [routerLink]="backRoute()">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18 9 12l6-6" /></svg>
+    </a>
+  }
+  <h1>{{ title() }}</h1>
+</header>

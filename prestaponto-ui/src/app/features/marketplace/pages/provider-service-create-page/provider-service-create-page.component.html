@@ -1,0 +1,35 @@
+<app-mobile-shell [navItems]="navItems" activeNav="catalog">
+  <app-basic-header [title]="'Cadastrar Serviço'" (back)="onBack()" />
+
+  <main class="flex flex-col overflow-y-auto px-[var(--spacing-md)] pt-[var(--spacing-md)] pb-[var(--spacing-lg)]">
+    <form class="flex flex-col gap-[var(--spacing-sm)]" [formGroup]="form" (ngSubmit)="submit()">
+      <app-labeled-input
+        label="Nome:"
+        placeholder="Ex: Aterramento Elétrico"
+        [control]="form.controls.name"
+      />
+
+      <app-labeled-input
+        label="Descrição"
+        placeholder="Ex: Instalação de sistema de segurança para os circuitos elétricos."
+        [control]="form.controls.description"
+        [multiline]="true"
+      />
+
+      <app-labeled-input
+        label="Categoria"
+        placeholder="Ex: Instalações Elétricas"
+        [control]="form.controls.category"
+      />
+
+      <app-labeled-input
+        label="Preço"
+        placeholder="25,00"
+        [control]="form.controls.price"
+        inputMode="decimal"
+      />
+
+      <button class="mt-[var(--spacing-md)] bg-[var(--color-primary-02)] text-[var(--color-white)] h-12 rounded-[0.875rem] font-semibold text-sm tracking-wide" type="submit">Cadastrar</button>
+    </form>
+  </main>
+</app-mobile-shell>
