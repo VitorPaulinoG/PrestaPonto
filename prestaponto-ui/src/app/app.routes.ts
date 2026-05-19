@@ -77,8 +77,17 @@ export const routes: Routes = [
       ).then((module) => module.ContractsPageComponent),
   },
   {
-    path: 'provider/catalog',
+    path: 'profile',
     canActivate: [authGuard],
+    loadComponent: () =>
+      import(
+        './features/marketplace/pages/profile-page/profile-page.component'
+      ).then((module) => module.ProfilePageComponent),
+  },
+  {
+    path: 'provider/catalog',
+    canActivate: [roleGuard],
+    data: { roles: ['PROVIDER'] },
     loadComponent: () =>
       import(
         './features/marketplace/pages/provider-catalog-page/provider-catalog-page.component'
@@ -86,7 +95,8 @@ export const routes: Routes = [
   },
   {
     path: 'provider/catalog/new',
-    canActivate: [authGuard],
+    canActivate: [roleGuard],
+    data: { roles: ['PROVIDER'] },
     loadComponent: () =>
       import(
         './features/marketplace/pages/provider-service-create-page/provider-service-create-page.component'
@@ -94,7 +104,8 @@ export const routes: Routes = [
   },
   {
     path: 'provider/contracts',
-    canActivate: [authGuard],
+    canActivate: [roleGuard],
+    data: { roles: ['PROVIDER'] },
     loadComponent: () =>
       import(
         './features/marketplace/pages/provider-contracts-page/provider-contracts-page.component'
@@ -102,7 +113,8 @@ export const routes: Routes = [
   },
   {
     path: 'provider/agenda',
-    canActivate: [authGuard],
+    canActivate: [roleGuard],
+    data: { roles: ['PROVIDER'] },
     loadComponent: () =>
       import(
         './features/marketplace/pages/provider-agenda-page/provider-agenda-page.component'
@@ -110,7 +122,8 @@ export const routes: Routes = [
   },
   {
     path: 'provider/agenda/new',
-    canActivate: [authGuard],
+    canActivate: [roleGuard],
+    data: { roles: ['PROVIDER'] },
     loadComponent: () =>
       import(
         './features/marketplace/pages/provider-agenda-create-page/provider-agenda-create-page.component'

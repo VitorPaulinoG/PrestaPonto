@@ -30,14 +30,14 @@ export const CLIENT_NAV_ITEMS: BottomNavItem[] = [
   { id: 'home', label: 'Início', route: '/home', icon: 'home' },
   { id: 'explore', label: 'Explorar', route: '/explore', icon: 'search' },
   { id: 'contracts', label: 'Contratos', route: '/contracts', icon: 'contract' },
-  { id: 'profile', label: 'Perfil', route: '/home', icon: 'person' },
+  { id: 'profile', label: 'Perfil', route: '/profile', icon: 'person' },
 ];
 
 export const PROVIDER_NAV_ITEMS: BottomNavItem[] = [
   { id: 'catalog', label: 'Catálogo', route: '/provider/catalog', icon: 'menu_book' },
   { id: 'contracts', label: 'Contratos', route: '/provider/contracts', icon: 'contract' },
   { id: 'agenda', label: 'Agenda', route: '/provider/agenda', icon: 'calendar_month' },
-  { id: 'profile', label: 'Perfil', route: '/home', icon: 'person' },
+  { id: 'profile', label: 'Perfil', route: '/profile', icon: 'person' },
 ];
 
 export const HOME_CATEGORY_CARDS: CategoryCard[] = [

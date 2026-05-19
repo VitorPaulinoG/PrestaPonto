@@ -1,0 +1,23 @@
+<app-mobile-shell [navItems]="navItems" [activeNav]="activeNav">
+  <app-basic-header [title]="'Perfil'" (back)="logoff()" />
+
+  <app-page-content>
+    <div class="flex flex-col items-center gap-[var(--spacing-md)] py-[var(--spacing-lg)]">
+      <div class="w-20 h-20 rounded-full bg-[var(--color-primary-02)] text-[var(--color-white)] flex items-center justify-center text-3xl font-semibold">
+        {{ role === 'PROVIDER' ? 'P' : 'C' }}
+      </div>
+
+      <p class="m-0 text-base font-semibold text-[var(--color-primary-01)]">
+        {{ role === 'PROVIDER' ? 'Prestador' : 'Cliente' }}
+      </p>
+
+      <button
+        class="mt-[var(--spacing-md)] w-full bg-[var(--color-error)] text-[var(--color-white)] h-12 rounded-[0.875rem] font-semibold text-sm tracking-wide"
+        type="button"
+        (click)="logoff()"
+      >
+        LOGOFF
+      </button>
+    </div>
+  </app-page-content>
+</app-mobile-shell>
