@@ -7,7 +7,7 @@
     } @else if (error()) {
       <p class="text-sm text-[var(--color-error)]">{{ error() }}</p>
     } @else {
-      <app-section-block title="Horarios">
+      <app-section-block title="Horarios" maxHeight="100%">
         @if (disponibilidades().length === 0) {
           <p class="text-sm text-[var(--color-neutral-04)] m-0">Nenhum horario cadastrado.</p>
         } @else {
