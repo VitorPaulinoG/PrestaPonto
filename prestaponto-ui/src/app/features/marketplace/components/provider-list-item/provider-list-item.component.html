@@ -1,0 +1,14 @@
+<article class="provider-list-item">
+  <div class="provider-list-item__avatar">{{ initials() }}</div>
+
+  <div class="provider-list-item__body">
+    <div class="provider-list-item__header">
+      <p>{{ name() }}</p>
+      <div class="provider-list-item__rating">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.67 6.2.9-4.5 4.39 1.06 6.19L12 17.2l-5.56 2.95 1.06-6.19L3 9.57l6.2-.9z" /></svg>
+        <span>{{ rating().toFixed(1) }}</span>
+      </div>
+    </div>
+    <p class="provider-list-item__category">{{ category() }}</p>
+  </div>
+</article>

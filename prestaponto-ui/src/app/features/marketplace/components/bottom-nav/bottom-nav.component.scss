@@ -1,0 +1,45 @@
+.bottom-nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 3.438rem;
+  padding: 0.35rem 1rem 0.3rem;
+  backdrop-filter: blur(2px);
+  background: rgb(255 255 255 / 0.76);
+}
+
+.bottom-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  color: var(--color-primary-03);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.bottom-nav__item--active {
+  color: var(--color-primary-02);
+}
+
+.bottom-nav__icon {
+  display: inline-flex;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.bottom-nav__icon svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

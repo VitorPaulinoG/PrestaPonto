@@ -1,0 +1,15 @@
+<article class="disponibilidade-card" [class.reserved]="reservada()" (click)="click.emit(id())">
+  <div class="disponibilidade-card__body">
+    <p class="disponibilidade-card__date">{{ formatDate(diaSemana()) }}</p>
+    <div class="disponibilidade-card__time">
+      <span>{{ horaInicio() }}</span>
+      <span> – </span>
+      <span>{{ horaFim() }}</span>
+    </div>
+    @if (reservada()) {
+      <span class="disponibilidade-card__badge">Reservada</span>
+    } @else {
+      <span class="disponibilidade-card__badge disponibilidade-card__badge--free">Disponível</span>
+    }
+  </div>
+</article>

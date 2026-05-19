@@ -1,0 +1,61 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: ${DB_CONTAINER_NAME:-prestaponto-db}
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-prestaponto}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - '${DB_PORT:-5432}:5432'
+    volumes:
+      - prestaponto-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - prestaponto-network
+
+  api:
+    build:
+      context: ./prestaponto-api
+      dockerfile: Dockerfile
+    container_name: ${API_CONTAINER_NAME:-prestaponto-api}
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      DB_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-prestaponto}
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - '${API_PORT:-8080}:8080'
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - prestaponto-network
+
+  app:
+    build:
+      context: ./prestaponto-ui
+      dockerfile: Dockerfile
+    container_name: ${APP_CONTAINER_NAME:-prestaponto-ui}
+    ports:
+      - '${APP_PORT:-80}:80'
+    depends_on:
+      - api
+    networks:
+      - prestaponto-network
+
+volumes:
+  prestaponto-postgres-data:
+
+networks:
+  prestaponto-network:
+    driver: bridge

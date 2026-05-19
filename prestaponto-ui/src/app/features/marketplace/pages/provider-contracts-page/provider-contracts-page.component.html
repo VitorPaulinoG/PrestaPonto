@@ -1,0 +1,31 @@
+<app-mobile-shell [navItems]="navItems" activeNav="contracts">
+  <app-basic-header [title]="'Contratos'" (back)="onBack()" />
+
+  <app-page-content>
+    @if (loading()) {
+      <p class="text-sm text-[var(--color-neutral-04)]">Carregando...</p>
+    } @else if (error()) {
+      <p class="text-sm text-[var(--color-error)]">{{ error() }}</p>
+    } @else {
+      <app-section-block title="Reservas">
+        @if (disponibilidades().length === 0) {
+          <p class="text-sm text-[var(--color-neutral-04)] m-0">Nenhuma reserva encontrada.</p>
+        } @else {
+          <ul class="flex flex-col gap-[var(--spacing-sm)]">
+            @for (disp of disponibilidades(); track disp.id) {
+              <li>
+                <app-disponibilidade-card
+                  [id]="disp.id"
+                  [diaSemana]="disp.diaSemana"
+                  [horaInicio]="disp.horaInicio"
+                  [horaFim]="disp.horaFim"
+                  [reservada]="true"
+                />
+              </li>
+            }
+          </ul>
+        }
+      </app-section-block>
+    }
+  </app-page-content>
+</app-mobile-shell>

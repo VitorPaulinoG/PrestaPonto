@@ -1,0 +1,9 @@
+<div class="app-mobile-shell">
+  <div class="app-mobile-shell__frame">
+    <div class="app-mobile-shell__content">
+      <ng-content />
+    </div>
+
+    <app-bottom-nav [items]="navItems()" [activeItem]="activeNav()" />
+  </div>
+</div>

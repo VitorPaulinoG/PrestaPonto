@@ -1,0 +1,47 @@
+<app-mobile-shell [navItems]="navItems" activeNav="explore">
+  <app-basic-header title="Detalhes do Serviço" (back)="onBack()" />
+
+  <app-page-content>
+    @if (item(); as item) {
+      <div class="catalog-item">
+        <div class="catalog-item__header">
+          <h1 class="catalog-item__name">{{ item.title }}</h1>
+          @if (item.rating > 0) {
+            <div class="catalog-item__rating">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m12 3 2.8 5.67 6.2.9-4.5 4.39 1.06 6.19L12 17.2l-5.56 2.95 1.06-6.19L3 9.57l6.2-.9z" />
+              </svg>
+              <span>{{ item.rating.toFixed(1) }}</span>
+            </div>
+          }
+        </div>
+
+        <p class="catalog-item__category">{{ item.category }}</p>
+
+        @if (item.description) {
+          <p class="catalog-item__description">{{ item.description }}</p>
+        }
+
+        <div class="catalog-item__details">
+          <div class="catalog-item__detail">
+            <span class="catalog-item__detail-label">Prestador</span>
+            <span class="catalog-item__detail-value">{{ item.providerName }}</span>
+          </div>
+          <div class="catalog-item__detail">
+            <span class="catalog-item__detail-label">Preço</span>
+            <span class="catalog-item__detail-value">{{ item.price }}</span>
+          </div>
+        </div>
+
+        <button
+          class="disponibilidades-btn"
+          (click)="onVerDisponibilidades()"
+        >
+          Ver Disponibilidades do Prestador
+        </button>
+      </div>
+    } @else {
+      <p class="text-center text-primary-02">Serviço não encontrado.</p>
+    }
+  </app-page-content>
+</app-mobile-shell>

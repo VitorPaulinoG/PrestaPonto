@@ -1,0 +1,34 @@
+.service-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3.25rem;
+  padding: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-primary-02);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+}
+
+.service-list-item__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.service-list-item__title,
+.service-list-item__category,
+.service-list-item__price {
+  margin: 0;
+}
+
+.service-list-item__title {
+  color: var(--color-primary-01);
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.service-list-item__category,
+.service-list-item__price {
+  color: var(--color-primary-02);
+  font-size: 0.625rem;
+  line-height: 1.2;
+}

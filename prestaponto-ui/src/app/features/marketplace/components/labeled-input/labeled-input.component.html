@@ -1,0 +1,22 @@
+<div class="labeled-input">
+  <label class="labeled-input__label" [for]="inputId">{{ label() }}</label>
+
+  @if (multiline()) {
+    <textarea
+      [id]="inputId"
+      class="labeled-input__control labeled-input__control--textarea"
+      [formControl]="control()"
+      [placeholder]="placeholder()"
+      [rows]="rows()"
+    ></textarea>
+  } @else {
+    <input
+      [id]="inputId"
+      class="labeled-input__control"
+      [formControl]="control()"
+      [placeholder]="placeholder()"
+      [inputMode]="inputMode()"
+      type="text"
+    />
+  }
+</div>

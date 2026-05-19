@@ -1,0 +1,10 @@
+<article class="category-card hover:cursor-pointer" (click)="categorySelected.emit(title())">
+  <span class="category-card__icon inline-flex items-center justify-center
+    w-[3rem] min-w-[3rem] text-primary-03"
+    aria-hidden="true"
+  >
+    <span class="material-symbols-outlined icon-48-light">{{icon()}}</span>
+  </span>
+
+  <span class="category-card__title">{{ title() }}</span>
+</article>
